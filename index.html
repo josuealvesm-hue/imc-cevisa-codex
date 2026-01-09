@@ -1,12 +1,675 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Risco Metabólico | Spa Médico Adventista Cevisa</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Risco Metabólico | Spa Médico Adventista Cevisa</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f9fb;
+      --card: #ffffff;
+      --primary: #1b6f5a;
+      --primary-dark: #125042;
+      --accent: #f2a900;
+      --text: #1f2a37;
+      --muted: #5f6b7a;
+      --danger: #c23b22;
+      --radius: 16px;
+      --shadow: 0 20px 40px rgba(16, 24, 40, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 48px 0 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: clamp(2rem, 3vw, 3rem);
+      margin-bottom: 12px;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      margin: 0 auto;
+      max-width: 640px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .calculator {
+      margin: 24px 0 40px;
+    }
+
+    .fields {
+      display: grid;
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid #d7dee5;
+      font-size: 1rem;
+    }
+
+    input:focus, select:focus {
+      outline: 2px solid rgba(27, 111, 90, 0.2);
+      border-color: var(--primary);
+    }
+
+    .helper {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .error {
+      color: var(--danger);
+      font-size: 0.85rem;
+      margin-top: 6px;
+      display: none;
+    }
+
+    button {
+      cursor: pointer;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: background 0.2s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background: var(--primary-dark);
+    }
+
+    .preview {
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px dashed rgba(27, 111, 90, 0.3);
+      background: rgba(27, 111, 90, 0.06);
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .preview strong {
+      font-size: 1.2rem;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .tag.ok {
+      background: rgba(27, 111, 90, 0.1);
+      color: var(--primary-dark);
+    }
+
+    .tag.alerta {
+      background: rgba(194, 59, 34, 0.12);
+      color: var(--danger);
+    }
+
+    .result {
+      margin-top: 24px;
+      display: none;
+    }
+
+    .result-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .result .numbers {
+      display: grid;
+      gap: 12px;
+    }
+
+    .disclaimer {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    .section {
+      margin: 56px 0;
+    }
+
+    .section h2 {
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      margin-bottom: 16px;
+    }
+
+    .measure {
+      display: grid;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .faq details {
+      background: var(--card);
+      padding: 16px 20px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .faq summary {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .cta {
+      background: var(--primary);
+      color: #fff;
+      padding: 36px 24px;
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .cta a {
+      display: inline-block;
+      margin-top: 16px;
+      background: #fff;
+      color: var(--primary);
+      padding: 12px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 10;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 24px;
+      width: min(480px, 92vw);
+      box-shadow: var(--shadow);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .close {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--muted);
+      width: auto;
+    }
+
+    @media (min-width: 768px) {
+      .fields {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .preview {
+        flex-direction: row;
+      }
+
+      .measure {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+
+      .result-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="container">
+    <h1>Descubra seu risco metabólico em 1 minuto</h1>
+    <p>Triagem educativa baseada em IMC e razão cintura/altura.</p>
+  </header>
+
+  <main class="container">
+    <section class="calculator card">
+      <h2>Avaliação de Risco Metabólico (IMC + Cintura/Altura)</h2>
+      <p class="helper">Preencha os dados abaixo para uma triagem educativa rápida.</p>
+      <div class="fields" aria-live="polite">
+        <div>
+          <label for="peso">Peso (kg)</label>
+          <input id="peso" type="number" inputmode="decimal" placeholder="Ex: 72" min="1" step="0.1" />
+          <div class="error" id="peso-error">Informe seu peso.</div>
+        </div>
+        <div>
+          <label for="altura">Altura (cm)</label>
+          <input id="altura" type="number" inputmode="decimal" placeholder="Ex: 168" min="1" step="0.1" />
+          <div class="error" id="altura-error">Informe sua altura.</div>
+        </div>
+        <div>
+          <label for="cintura">Cintura (cm)</label>
+          <input id="cintura" type="number" inputmode="decimal" placeholder="Ex: 82" min="1" step="0.1" />
+          <div class="error" id="cintura-error">Informe sua cintura.</div>
+        </div>
+        <div>
+          <label for="sexo">Sexo (opcional)</label>
+          <select id="sexo">
+            <option value="">Prefiro não informar</option>
+            <option value="F">Feminino</option>
+            <option value="M">Masculino</option>
+          </select>
+        </div>
+        <div>
+          <label for="idade">Idade (opcional)</label>
+          <input id="idade" type="number" inputmode="numeric" placeholder="Ex: 42" min="1" max="120" />
+        </div>
+      </div>
+      <button id="calcular">Ver meu resultado</button>
+      <div class="preview" id="preview">
+        <strong>Seu resultado está pronto</strong>
+        <span class="tag" id="preview-tag">Triagem</span>
+      </div>
+      <div class="result" id="resultado">
+        <div class="result-grid">
+          <div class="numbers">
+            <div>
+              <strong>IMC:</strong> <span id="imc-value">--</span>
+              <div class="helper" id="imc-class">Classificação: --</div>
+            </div>
+            <div>
+              <strong>Razão cintura/altura (WHtR):</strong> <span id="wthr-value">--</span>
+              <div class="helper" id="wthr-class">Interpretação: --</div>
+            </div>
+          </div>
+          <div>
+            <strong>Leitura educativa</strong>
+            <p class="helper" id="interpretacao">--</p>
+            <p class="disclaimer">Ferramenta educativa de triagem. Não é diagnóstico. Em caso de sintomas ou dúvida, procure avaliação profissional.</p>
+          </div>
+        </div>
+        <div style="margin-top: 16px;">
+          <a id="cta-whatsapp" href="#" class="helper" style="display: inline-flex; gap: 8px; align-items: center; font-weight: 700; color: var(--primary); text-decoration: none;">
+            Falar com um consultor do Spa Médico Cevisa
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section measure">
+      <div>
+        <h2>Como medir a cintura</h2>
+        <p>Use uma fita métrica na altura do umbigo, mantendo o abdômen relaxado. A medida deve ficar justa ao corpo, sem apertar demais.</p>
+      </div>
+      <div>
+        <svg viewBox="0 0 240 200" role="img" aria-label="Ilustração simples de medição da cintura" width="100%" height="auto">
+          <rect x="20" y="10" width="200" height="180" rx="16" fill="#f7f2ea" stroke="#e4d7c7" />
+          <circle cx="120" cy="70" r="30" fill="#ffe9d1" stroke="#d6b89c" />
+          <rect x="70" y="100" width="100" height="70" rx="30" fill="#ffe9d1" stroke="#d6b89c" />
+          <rect x="55" y="125" width="130" height="12" rx="6" fill="#1b6f5a" />
+          <line x1="55" y1="125" x2="55" y2="150" stroke="#1b6f5a" stroke-width="4" />
+          <line x1="185" y1="125" x2="185" y2="150" stroke="#1b6f5a" stroke-width="4" />
+          <text x="80" y="152" font-size="10" fill="#fff">cintura</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="section faq">
+      <h2>Perguntas frequentes</h2>
+      <div class="grid">
+        <details>
+          <summary>Esses cálculos substituem avaliação médica?</summary>
+          <p>Não. Esta é uma triagem educativa. Use os resultados como referência e procure profissionais de saúde para uma avaliação completa.</p>
+        </details>
+        <details>
+          <summary>Posso usar mesmo sem saber minha idade ou sexo?</summary>
+          <p>Sim. Os campos são opcionais e não interferem no cálculo do IMC ou da razão cintura/altura.</p>
+        </details>
+        <details>
+          <summary>Por que vocês pedem meu WhatsApp?</summary>
+          <p>Para enviar orientações personalizadas e disponibilizar um consultor do Spa Médico Cevisa, caso você deseje conversar.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section cta">
+      <h2>Quer orientação personalizada?</h2>
+      <p>Converse com nossa equipe e receba recomendações alinhadas ao seu perfil.</p>
+      <a href="https://wa.me/5599999999999?text=Quero%20saber%20mais%20sobre%20a%20avalia%C3%A7%C3%A3o%20de%20risco%20metab%C3%B3lico" target="_blank" rel="noopener">Falar com um consultor do Spa Médico Cevisa</a>
+    </section>
+  </main>
+
+  <div class="modal" id="lead-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Para ver seu resultado completo</h3>
+        <button class="close" id="close-modal" aria-label="Fechar">&times;</button>
+      </div>
+      <p class="helper">Deixe seu nome e WhatsApp para receber orientações educativas.</p>
+      <div class="fields">
+        <div>
+          <label for="lead-nome">Nome</label>
+          <input id="lead-nome" type="text" placeholder="Seu nome" />
+          <div class="error" id="lead-nome-error">Informe seu nome.</div>
+        </div>
+        <div>
+          <label for="lead-whatsapp">WhatsApp</label>
+          <input id="lead-whatsapp" type="tel" placeholder="+55 (DD) 9xxxx-xxxx" />
+          <div class="error" id="lead-whatsapp-error">Informe um WhatsApp válido.</div>
+        </div>
+      </div>
+      <button id="enviar-lead" style="margin-top: 16px;">Ver resultado completo</button>
+    </div>
+  </div>
+
+  <script>
+    const LEAD_ENDPOINT = ""; // Defina o endpoint para receber o lead, se houver.
+    const INCLUDE_RAW_MEASURES = false; // Toggle fácil para enviar peso/altura/cintura junto com a triagem.
+
+    const calcularBtn = document.getElementById("calcular");
+    const preview = document.getElementById("preview");
+    const previewTag = document.getElementById("preview-tag");
+    const resultado = document.getElementById("resultado");
+    const modal = document.getElementById("lead-modal");
+    const closeModalBtn = document.getElementById("close-modal");
+    const enviarLeadBtn = document.getElementById("enviar-lead");
+
+    const campos = {
+      peso: document.getElementById("peso"),
+      altura: document.getElementById("altura"),
+      cintura: document.getElementById("cintura"),
+      sexo: document.getElementById("sexo"),
+      idade: document.getElementById("idade"),
+    };
+
+    const erros = {
+      peso: document.getElementById("peso-error"),
+      altura: document.getElementById("altura-error"),
+      cintura: document.getElementById("cintura-error"),
+      nome: document.getElementById("lead-nome-error"),
+      whatsapp: document.getElementById("lead-whatsapp-error"),
+    };
+
+    const imcValue = document.getElementById("imc-value");
+    const imcClass = document.getElementById("imc-class");
+    const wthrValue = document.getElementById("wthr-value");
+    const wthrClass = document.getElementById("wthr-class");
+    const interpretacao = document.getElementById("interpretacao");
+    const ctaWhatsapp = document.getElementById("cta-whatsapp");
+
+    const leadNome = document.getElementById("lead-nome");
+    const leadWhatsapp = document.getElementById("lead-whatsapp");
+
+    let ultimaTriagem = null;
+
+    function validarCampo(campo, errorEl) {
+      if (!campo.value || Number(campo.value) <= 0) {
+        errorEl.style.display = "block";
+        return false;
+      }
+      errorEl.style.display = "none";
+      return true;
+    }
+
+    function classificarImc(imc) {
+      if (imc < 18.5) return "Baixo peso";
+      if (imc < 25) return "Adequado";
+      if (imc < 30) return "Sobrepeso";
+      if (imc < 35) return "Obesidade I";
+      if (imc < 40) return "Obesidade II";
+      return "Obesidade III";
+    }
+
+    function interpretarWthr(wthr) {
+      return wthr < 0.5 ? "Sem aumento de risco" : "Aumento de risco cardiometabólico";
+    }
+
+    function atualizarPreview(imc, wthr) {
+      const alerta = imc >= 25 || wthr >= 0.5;
+      previewTag.textContent = alerta ? "Atenção" : "Dentro do esperado";
+      previewTag.className = `tag ${alerta ? "alerta" : "ok"}`;
+      preview.style.display = "flex";
+    }
+
+    function formatarNumero(numero, casas) {
+      return Number(numero).toFixed(casas).replace(".", ",");
+    }
+
+    function montarMensagemWhatsapp(triagem) {
+      const texto = `Olá! Fiz a triagem educativa de risco metabólico. Meu IMC foi ${triagem.imc} e minha razão cintura/altura foi ${triagem.wthr}. Gostaria de falar com um consultor.`;
+      return `https://wa.me/55${triagem.whatsappSomenteNumeros}?text=${encodeURIComponent(texto)}`;
+    }
+
+    function obterUtms() {
+      const params = new URLSearchParams(window.location.search);
+      const utm = {};
+      ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach((key) => {
+        if (params.get(key)) utm[key] = params.get(key);
+      });
+      return utm;
+    }
+
+    async function enviarLead(triagem) {
+      const payload = {
+        nome: triagem.nome,
+        whatsapp: triagem.whatsapp,
+        timestamp: new Date().toISOString(),
+        origem: obterUtms(),
+        triagem: {
+          imc: triagem.imc,
+          wthr: triagem.wthr,
+        },
+      };
+
+      if (INCLUDE_RAW_MEASURES) {
+        payload.triagem.medidas = {
+          peso: triagem.peso,
+          altura: triagem.altura,
+          cintura: triagem.cintura,
+        };
+      }
+
+      // Gate: envia somente dados mínimos para captação do lead.
+      if (LEAD_ENDPOINT) {
+        const response = await fetch(LEAD_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) {
+          throw new Error("Falha ao enviar lead.");
+        }
+      } else {
+        const leads = JSON.parse(localStorage.getItem("leads_metabolico") || "[]");
+        leads.push(payload);
+        localStorage.setItem("leads_metabolico", JSON.stringify(leads));
+        console.info("Lead salvo localmente:", payload);
+      }
+    }
+
+    function mostrarResultado(triagem) {
+      imcValue.textContent = triagem.imc;
+      imcClass.textContent = `Classificação: ${triagem.imcClass}`;
+      wthrValue.textContent = triagem.wthr;
+      wthrClass.textContent = `Interpretação: ${triagem.wthrClass}`;
+      interpretacao.textContent = triagem.alerta
+        ? "Seus indicadores estão associados a maior risco cardiometabólico. Considere conversar com um profissional para uma avaliação completa."
+        : "Seus indicadores estão dentro do esperado, mas mantenha hábitos saudáveis e acompanhe regularmente.";
+      resultado.style.display = "block";
+      ctaWhatsapp.href = montarMensagemWhatsapp(triagem);
+      ctaWhatsapp.target = "_blank";
+      ctaWhatsapp.rel = "noopener";
+    }
+
+    calcularBtn.addEventListener("click", () => {
+      const valido = [
+        validarCampo(campos.peso, erros.peso),
+        validarCampo(campos.altura, erros.altura),
+        validarCampo(campos.cintura, erros.cintura),
+      ].every(Boolean);
+
+      if (!valido) {
+        preview.style.display = "none";
+        resultado.style.display = "none";
+        return;
+      }
+
+      const peso = Number(campos.peso.value);
+      const alturaCm = Number(campos.altura.value);
+      const cintura = Number(campos.cintura.value);
+      const alturaM = alturaCm / 100;
+
+      // Cálculo do IMC = peso / (altura em metros ^ 2)
+      const imc = peso / (alturaM * alturaM);
+      // Cálculo do WHtR = cintura (cm) / altura (cm)
+      const wthr = cintura / alturaCm;
+
+      const imcFormatado = formatarNumero(imc, 1);
+      const wthrFormatado = formatarNumero(wthr, 2);
+      const imcClasse = classificarImc(imc);
+      const wthrClasse = interpretarWthr(wthr);
+      const alerta = imc >= 25 || wthr >= 0.5;
+
+      ultimaTriagem = {
+        peso,
+        altura: alturaCm,
+        cintura,
+        sexo: campos.sexo.value,
+        idade: campos.idade.value,
+        imc: imcFormatado,
+        wthr: wthrFormatado,
+        imcClass: imcClasse,
+        wthrClass: wthrClasse,
+        alerta,
+      };
+
+      atualizarPreview(imc, wthr);
+      modal.style.display = "flex";
+    });
+
+    closeModalBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+
+    function validarLead() {
+      let ok = true;
+      if (!leadNome.value.trim()) {
+        erros.nome.style.display = "block";
+        ok = false;
+      } else {
+        erros.nome.style.display = "none";
+      }
+
+      const numero = leadWhatsapp.value.replace(/\D/g, "");
+      if (numero.length < 12) {
+        erros.whatsapp.style.display = "block";
+        ok = false;
+      } else {
+        erros.whatsapp.style.display = "none";
+      }
+
+      return { ok, numero };
+    }
+
+    leadWhatsapp.addEventListener("input", () => {
+      const digits = leadWhatsapp.value.replace(/\D/g, "").slice(0, 13);
+      let formatted = "+55 ";
+      if (digits.length >= 2) {
+        formatted += `(${digits.slice(0, 2)}) `;
+      } else {
+        formatted += digits;
+      }
+      if (digits.length >= 7) {
+        formatted += `${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
+      } else if (digits.length > 2) {
+        formatted += digits.slice(2);
+      }
+      leadWhatsapp.value = formatted.trim();
+    });
+
+    enviarLeadBtn.addEventListener("click", async () => {
+      if (!ultimaTriagem) return;
+      const { ok, numero } = validarLead();
+      if (!ok) return;
+
+      try {
+        await enviarLead({
+          ...ultimaTriagem,
+          nome: leadNome.value.trim(),
+          whatsapp: leadWhatsapp.value.trim(),
+          whatsappSomenteNumeros: numero,
+        });
+        modal.style.display = "none";
+        mostrarResultado({
+          ...ultimaTriagem,
+          nome: leadNome.value.trim(),
+          whatsapp: leadWhatsapp.value.trim(),
+          whatsappSomenteNumeros: numero,
+        });
+      } catch (error) {
+        console.error(error);
+        alert("Não foi possível enviar seus dados agora. Tente novamente.");
+      }
+    });
+  </script>
+</body>
 </html>
