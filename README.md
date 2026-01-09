@@ -36,5 +36,9 @@ npm run deploy
 A URL final ficará:
 
 ```
-https://<seu-usuario>.github.io/SEU_REPO/
+https://<seu-usuario>.github.io/REPO_NAME/
 ```
+
+## Deploy automático (GitHub Actions)
+
+Este repositório inclui workflow em `.github/workflows/deploy.yml` que publica automaticamente a pasta `dist` no GitHub Pages ao fazer push na branch `main`. Certifique-se de atualizar o `base` em `vite.config.js` para `REPO_NAME`. 
