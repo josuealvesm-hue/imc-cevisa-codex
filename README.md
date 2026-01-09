@@ -12,33 +12,12 @@ npm run preview
 
 ## GitHub Pages (deploy)
 
-Este projeto está configurado para publicar no GitHub Pages com `gh-pages`.
+O deploy é feito automaticamente via GitHub Actions ao fazer push na branch `main`.
 
-1. Atualize o `base` em `vite.config.js` para o nome do seu repositório:
-
-```js
-base: '/SEU_REPO/'
-```
-
-2. Instale dependências e faça o build:
-
-```bash
-npm install
-npm run build
-```
-
-3. Faça o deploy:
-
-```bash
-npm run deploy
-```
-
-A URL final ficará:
+URL do site publicado:
 
 ```
-https://<seu-usuario>.github.io/REPO_NAME/
+https://<seu-usuario>.github.io/imc-cevisa-codex/
 ```
 
-## Deploy automático (GitHub Actions)
-
-Este repositório inclui workflow em `.github/workflows/deploy.yml` que publica automaticamente a pasta `dist` no GitHub Pages ao fazer push na branch `main`. Certifique-se de atualizar o `base` em `vite.config.js` para `REPO_NAME`. 
+Certifique-se de manter o `base` em `vite.config.js` como `/imc-cevisa-codex/`.

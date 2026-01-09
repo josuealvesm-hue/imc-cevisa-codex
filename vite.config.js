@@ -4,10 +4,10 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/REPO_NAME/', // Troque REPO_NAME pelo nome do repositório no GitHub Pages.
+  base: '/imc-cevisa-codex/',
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src')
+      '@': path.resolve(__dirname, './src')
     }
   }
 });
