@@ -9,6 +9,74 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
+    :root {
+      --c-primary: #1C549C;
+      --c-secondary: #6CD3FB;
+      --c-accent: #28F5CC;
+      --c-cta: #FF9500;
+
+      /* Tons claros (para backgrounds suaves) */
+      --c-primary-50: rgba(28,84,156,0.08);
+      --c-secondary-50: rgba(108,211,251,0.16);
+      --c-accent-50: rgba(40,245,204,0.16);
+      --c-cta-50: rgba(255,149,0,0.14);
+
+      /* Sombras */
+      --shadow-primary: 0 10px 25px rgba(28,84,156,0.18);
+      --shadow-cta: 0 10px 25px rgba(255,149,0,0.18);
+    }
+
+    .bg-primary { background: var(--c-primary); }
+    .bg-secondary { background: var(--c-secondary); }
+    .bg-accent { background: var(--c-accent); }
+    .bg-cta { background: var(--c-cta); }
+
+    .text-primary { color: var(--c-primary); }
+    .text-secondary { color: #075985; }
+    .text-accent { color: #0f766e; }
+    .text-cta { color: var(--c-cta); }
+
+    .bg-primary-soft { background: var(--c-primary-50); }
+    .bg-secondary-soft { background: var(--c-secondary-50); }
+    .bg-accent-soft { background: var(--c-accent-50); }
+    .bg-cta-soft { background: var(--c-cta-50); }
+
+    .border-primary { border-color: rgba(28,84,156,0.28); }
+    .border-secondary { border-color: rgba(108,211,251,0.35); }
+    .border-accent { border-color: rgba(40,245,204,0.35); }
+    .border-cta { border-color: rgba(255,149,0,0.35); }
+
+    .btn-brand {
+      background: linear-gradient(90deg, var(--c-primary), var(--c-accent));
+      color: white;
+      box-shadow: var(--shadow-primary);
+    }
+    .btn-brand:hover { filter: brightness(0.95); }
+
+    .btn-cta {
+      background: linear-gradient(90deg, var(--c-cta), var(--c-primary));
+      color: white;
+      box-shadow: var(--shadow-cta);
+    }
+    .btn-cta:hover { filter: brightness(0.95); }
+
+    .ring-brand:focus { outline: none; box-shadow: 0 0 0 4px rgba(108,211,251,0.35); }
+
+    .bg-hero-gradient {
+      background: linear-gradient(135deg, var(--c-primary-50), #ffffff, var(--c-secondary-50));
+    }
+
+    .bg-brand-gradient {
+      background: linear-gradient(90deg, var(--c-primary), var(--c-accent));
+    }
+
+    .bg-cta-gradient {
+      background: linear-gradient(90deg, var(--c-cta), var(--c-primary));
+    }
+
+    .text-on-primary { color: #ffffff; }
+    .text-on-primary-muted { color: rgba(255,255,255,0.8); }
+
     /* Pequenas animações/UX sem React/Framer */
     .fade-in { animation: fadeIn .25s ease-out; }
     @keyframes fadeIn { from { opacity:0; transform: translateY(8px);} to { opacity:1; transform: translateY(0);} }
@@ -45,19 +113,19 @@
     <!-- ======= FORM VIEW (Hero + Calculadora + HowToMeasure + FAQ + CTA + Footer) ======= -->
     <div id="viewForm" class="fade-in">
       <!-- HeroSection -->
-      <section class="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-teal-50 pt-8 pb-12 md:pt-16 md:pb-20">
-        <div class="absolute top-0 right-0 w-72 h-72 bg-emerald-100/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-        <div class="absolute bottom-0 left-0 w-96 h-96 bg-teal-100/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+      <section class="relative overflow-hidden bg-hero-gradient pt-8 pb-12 md:pt-16 md:pb-20">
+        <div class="absolute top-0 right-0 w-72 h-72 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 bg-primary-soft"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 bg-secondary-soft"></div>
 
         <div class="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm border border-emerald-100 mb-6">
-            <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
-            <span class="text-sm font-medium text-emerald-700">Spa Médico Adventista Cevisa</span>
+          <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm border border-primary mb-6">
+            <span class="w-2 h-2 rounded-full bg-primary"></span>
+            <span class="text-sm font-medium text-primary">Spa Médico Adventista Cevisa</span>
           </div>
 
           <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4">
             Descubra seu
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">risco metabólico</span>
+            <span class="text-transparent bg-clip-text bg-brand-gradient">risco metabólico</span>
             em 1 minuto
           </h1>
 
@@ -67,11 +135,11 @@
 
           <div class="flex flex-wrap justify-center gap-3 sm:gap-4">
             <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-xl shadow-sm">
-              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="w-2 h-2 rounded-full bg-primary"></span>
               <span class="text-sm font-medium text-gray-700">Cálculo IMC</span>
             </div>
             <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-xl shadow-sm">
-              <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+              <span class="w-2 h-2 rounded-full bg-cta"></span>
               <span class="text-sm font-medium text-gray-700">Razão Cintura/Altura</span>
             </div>
           </div>
@@ -81,16 +149,16 @@
       <!-- CalculatorCard -->
       <section id="calculadora" class="py-8 md:py-12 px-4">
         <div class="max-w-lg mx-auto">
-          <div class="bg-white rounded-3xl shadow-xl shadow-emerald-100/50 border border-gray-100 overflow-hidden">
+          <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden" style="box-shadow: var(--shadow-primary);">
             <!-- Header -->
-            <div class="bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-5">
+            <div class="bg-brand-gradient px-6 py-5">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
                   <span class="text-white font-bold">⌁</span>
                 </div>
                 <div>
                   <h2 class="text-lg font-semibold text-white">Avaliação de Risco Metabólico</h2>
-                  <p class="text-emerald-100 text-sm">Preencha seus dados abaixo</p>
+                  <p class="text-on-primary-muted text-sm">Preencha seus dados abaixo</p>
                 </div>
               </div>
             </div>
@@ -100,34 +168,34 @@
               <!-- Peso -->
               <div class="space-y-2">
                 <label for="peso" class="flex items-center gap-2 text-gray-700 font-medium">
-                  <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                  <span class="w-2 h-2 rounded-full bg-primary"></span>
                   Peso (kg) *
                 </label>
                 <input id="peso" type="text" inputmode="decimal" placeholder="Ex: 70.5"
-                  class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none focus:ring-2 focus:ring-emerald-200" />
-                <p id="errPeso" class="hidden text-red-500 text-sm"></p>
+                  class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none ring-brand" />
+                <p id="errPeso" class="hidden text-cta text-sm"></p>
               </div>
 
               <!-- Altura -->
               <div class="space-y-2">
                 <label for="altura" class="flex items-center gap-2 text-gray-700 font-medium">
-                  <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                  <span class="w-2 h-2 rounded-full bg-primary"></span>
                   Altura (cm) *
                 </label>
                 <input id="altura" type="text" inputmode="decimal" placeholder="Ex: 170"
-                  class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none focus:ring-2 focus:ring-emerald-200" />
-                <p id="errAltura" class="hidden text-red-500 text-sm"></p>
+                  class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none ring-brand" />
+                <p id="errAltura" class="hidden text-cta text-sm"></p>
               </div>
 
               <!-- Cintura -->
               <div class="space-y-2">
                 <label for="cintura" class="flex items-center gap-2 text-gray-700 font-medium">
-                  <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                  <span class="w-2 h-2 rounded-full bg-primary"></span>
                   Circunferência da cintura (cm) *
                 </label>
                 <input id="cintura" type="text" inputmode="decimal" placeholder="Ex: 80"
-                  class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none focus:ring-2 focus:ring-emerald-200" />
-                <p id="errCintura" class="hidden text-red-500 text-sm"></p>
+                  class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none ring-brand" />
+                <p id="errCintura" class="hidden text-cta text-sm"></p>
               </div>
 
               <!-- Optional row -->
@@ -138,7 +206,7 @@
                     <span class="w-2 h-2 rounded-full bg-gray-300"></span>
                     Sexo
                   </label>
-                  <select id="sexo" class="h-12 w-full rounded-md border border-gray-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                  <select id="sexo" class="h-12 w-full rounded-md border border-gray-200 px-3 text-sm focus:outline-none ring-brand">
                     <option value="">Opcional</option>
                     <option value="masculino">Masculino</option>
                     <option value="feminino">Feminino</option>
@@ -149,13 +217,13 @@
                 <div class="space-y-2">
                   <label for="idade" class="text-gray-700 font-medium">Idade</label>
                   <input id="idade" type="text" inputmode="numeric" placeholder="Opcional"
-                    class="h-12 w-full rounded-md border border-gray-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200" />
+                    class="h-12 w-full rounded-md border border-gray-200 px-3 text-sm focus:outline-none ring-brand" />
                 </div>
               </div>
 
               <!-- Submit -->
               <button id="calcSubmit" type="submit"
-                class="w-full h-14 text-lg font-semibold rounded-md bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-200 transition-all duration-300 text-white flex items-center justify-center gap-3">
+                class="w-full h-14 text-lg font-semibold rounded-md btn-brand transition-all duration-300 text-white flex items-center justify-center gap-3">
                 <span id="calcSubmitText">Ver meu resultado</span>
                 <span id="calcSpinner" class="hidden w-6 h-6 border-2 border-white border-t-transparent rounded-full spin"></span>
               </button>
@@ -170,9 +238,9 @@
       <section class="py-12 md:py-16 bg-gradient-to-b from-white to-gray-50">
         <div class="max-w-4xl mx-auto px-4 sm:px-6">
           <div class="text-center mb-10">
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-full mb-4">
-              <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
-              <span class="text-sm font-medium text-emerald-700">Guia de medição</span>
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary-soft rounded-full mb-4">
+              <span class="w-2 h-2 rounded-full bg-primary"></span>
+              <span class="text-sm font-medium text-primary">Guia de medição</span>
             </div>
             <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
               Como medir a circunferência da cintura
@@ -191,11 +259,11 @@
                 <path d="M110 125 Q80 140 60 180 Q55 200 65 210 L75 205 Q70 190 75 175 Q90 145 115 135" fill="#E5E7EB" />
                 <path d="M190 125 Q220 140 240 180 Q245 200 235 210 L225 205 Q230 190 225 175 Q210 145 185 135" fill="#E5E7EB" />
 
-                <ellipse cx="150" cy="200" rx="55" ry="15" fill="none" stroke="#10B981" stroke-width="4" stroke-dasharray="8 4" />
-                <circle cx="95" cy="200" r="6" fill="#10B981" />
-                <circle cx="205" cy="200" r="6" fill="#10B981" />
+                <ellipse cx="150" cy="200" rx="55" ry="15" fill="none" stroke="var(--c-primary)" stroke-width="4" stroke-dasharray="8 4" />
+                <circle cx="95" cy="200" r="6" fill="var(--c-primary)" />
+                <circle cx="205" cy="200" r="6" fill="var(--c-primary)" />
 
-                <text x="150" y="235" text-anchor="middle" fill="#059669" font-size="14" font-weight="600">Ponto de medição</text>
+                <text x="150" y="235" text-anchor="middle" fill="var(--c-primary)" font-size="14" font-weight="600">Ponto de medição</text>
 
                 <path d="M70 165 L85 200 L70 235" fill="none" stroke="#9CA3AF" stroke-width="2" />
                 <text x="55" y="155" fill="#6B7280" font-size="11" text-anchor="middle">Última</text>
@@ -203,46 +271,46 @@
                 <text x="55" y="245" fill="#6B7280" font-size="11" text-anchor="middle">Crista</text>
                 <text x="55" y="258" fill="#6B7280" font-size="11" text-anchor="middle">ilíaca</text>
 
-                <rect x="220" y="185" width="40" height="30" rx="3" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2" />
-                <line x1="225" y1="195" x2="255" y2="195" stroke="#F59E0B" stroke-width="1" />
-                <line x1="225" y1="200" x2="255" y2="200" stroke="#F59E0B" stroke-width="1" />
-                <line x1="225" y1="205" x2="255" y2="205" stroke="#F59E0B" stroke-width="1" />
+                <rect x="220" y="185" width="40" height="30" rx="3" fill="var(--c-cta-50)" stroke="var(--c-cta)" stroke-width="2" />
+                <line x1="225" y1="195" x2="255" y2="195" stroke="var(--c-cta)" stroke-width="1" />
+                <line x1="225" y1="200" x2="255" y2="200" stroke="var(--c-cta)" stroke-width="1" />
+                <line x1="225" y1="205" x2="255" y2="205" stroke="var(--c-cta)" stroke-width="1" />
               </svg>
             </div>
 
             <div class="space-y-4">
               <div class="flex items-start gap-4">
-                <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span class="text-emerald-700 font-semibold text-sm">1</span>
+                <div class="w-8 h-8 bg-primary-soft rounded-full flex items-center justify-center flex-shrink-0">
+                  <span class="text-primary font-semibold text-sm">1</span>
                 </div>
                 <p class="text-gray-700 pt-1">Fique em pé, com os pés juntos e o abdômen relaxado</p>
               </div>
 
               <div class="flex items-start gap-4">
-                <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span class="text-emerald-700 font-semibold text-sm">2</span>
+                <div class="w-8 h-8 bg-primary-soft rounded-full flex items-center justify-center flex-shrink-0">
+                  <span class="text-primary font-semibold text-sm">2</span>
                 </div>
                 <p class="text-gray-700 pt-1">Localize o ponto médio entre a última costela e a crista ilíaca (osso do quadril)</p>
               </div>
 
               <div class="flex items-start gap-4">
-                <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span class="text-emerald-700 font-semibold text-sm">3</span>
+                <div class="w-8 h-8 bg-primary-soft rounded-full flex items-center justify-center flex-shrink-0">
+                  <span class="text-primary font-semibold text-sm">3</span>
                 </div>
                 <p class="text-gray-700 pt-1">Passe a fita métrica ao redor da cintura nesse ponto, mantendo-a horizontal</p>
               </div>
 
               <div class="flex items-start gap-4">
-                <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span class="text-emerald-700 font-semibold text-sm">4</span>
+                <div class="w-8 h-8 bg-primary-soft rounded-full flex items-center justify-center flex-shrink-0">
+                  <span class="text-primary font-semibold text-sm">4</span>
                 </div>
                 <p class="text-gray-700 pt-1">Meça ao final de uma expiração normal, sem prender a respiração</p>
               </div>
 
-              <div class="mt-6 p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+              <div class="mt-6 p-4 bg-primary-soft rounded-xl border border-primary">
                 <div class="flex items-start gap-3">
-                  <span class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5">✅</span>
-                  <p class="text-sm text-emerald-800">
+                  <span class="w-5 h-5 text-primary flex-shrink-0 mt-0.5">✅</span>
+                  <p class="text-sm text-primary">
                     <strong>Dica:</strong> Faça a medição diretamente sobre a pele ou com roupas leves.
                     A fita deve ficar firme, mas sem apertar.
                   </p>
@@ -273,38 +341,38 @@
       </section>
 
       <!-- FinalCTA -->
-      <section class="py-16 md:py-20 bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-700 relative overflow-hidden">
+      <section class="py-16 md:py-20 bg-brand-gradient relative overflow-hidden">
         <div class="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-        <div class="absolute bottom-0 right-0 w-96 h-96 bg-teal-400/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-secondary-soft rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
 
         <div class="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Cuide da sua saúde com quem entende</h2>
-          <p class="text-lg text-emerald-100 max-w-2xl mx-auto mb-8">
+          <p class="text-lg text-on-primary-muted max-w-2xl mx-auto mb-8">
             O Spa Médico Adventista Cevisa oferece programas completos de saúde e bem-estar,
             com acompanhamento multidisciplinar personalizado.
           </p>
 
           <div class="grid sm:grid-cols-3 gap-4 mb-10">
             <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-              <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-white/10 flex items-center justify-center text-emerald-200">☎</div>
+              <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-white/10 flex items-center justify-center text-on-primary-muted">☎</div>
               <p class="text-sm text-white font-medium">Atendimento Humanizado</p>
             </div>
             <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-              <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-white/10 flex items-center justify-center text-emerald-200">⏱</div>
+              <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-white/10 flex items-center justify-center text-on-primary-muted">⏱</div>
               <p class="text-sm text-white font-medium">Programas Personalizados</p>
             </div>
             <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-              <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-white/10 flex items-center justify-center text-emerald-200">📍</div>
+              <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-white/10 flex items-center justify-center text-on-primary-muted">📍</div>
               <p class="text-sm text-white font-medium">Ambiente Acolhedor</p>
             </div>
           </div>
 
           <a id="finalCtaBtn" href="#" target="_blank" rel="noopener noreferrer"
-             class="inline-flex items-center justify-center h-16 px-10 text-lg font-semibold bg-white text-emerald-700 hover:bg-emerald-50 shadow-xl shadow-black/20 rounded-md">
+             class="inline-flex items-center justify-center h-16 px-10 text-lg font-semibold bg-white text-primary hover:bg-gray-50 shadow-xl shadow-black/20 rounded-md">
             💬 <span class="ml-3">Falar com um consultor</span>
           </a>
 
-          <p class="text-sm text-emerald-200 mt-4">Resposta rápida pelo WhatsApp</p>
+          <p class="text-sm text-on-primary-muted mt-4">Resposta rápida pelo WhatsApp</p>
         </div>
       </section>
 
@@ -313,7 +381,7 @@
         <div class="max-w-4xl mx-auto px-4 sm:px-6">
           <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-emerald-500"></span>
+              <span class="w-5 h-5 rounded-full bg-primary"></span>
               <span class="text-sm font-medium text-white">Spa Médico Adventista Cevisa</span>
             </div>
 
@@ -330,7 +398,7 @@
     <div id="viewPreview" class="hidden fade-in py-12 bg-gradient-to-br from-gray-50 to-white min-h-screen">
       <div class="max-w-lg mx-auto px-4">
         <div class="bg-white rounded-3xl shadow-xl shadow-gray-100/50 border border-gray-100 overflow-hidden">
-          <div id="previewHeader" class="px-6 py-6 bg-gradient-to-r from-emerald-500 to-teal-500">
+          <div id="previewHeader" class="px-6 py-6 bg-brand-gradient">
             <div class="flex items-center justify-center gap-3">
               <div id="previewIcon" class="w-8 h-8 text-white flex items-center justify-center">✅</div>
               <h3 class="text-xl font-bold text-white">Seu resultado está pronto!</h3>
@@ -338,11 +406,11 @@
           </div>
 
           <div class="p-6 space-y-6">
-            <div id="previewQualBox" class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
+            <div id="previewQualBox" class="p-4 rounded-2xl bg-primary-soft border border-primary">
               <div class="flex items-start gap-3">
-                <div id="previewQualIcon" class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">✅</div>
+                <div id="previewQualIcon" class="w-10 h-10 bg-primary-soft rounded-xl flex items-center justify-center flex-shrink-0">✅</div>
                 <div>
-                  <p id="previewQualTitle" class="font-semibold text-emerald-800">
+                  <p id="previewQualTitle" class="font-semibold text-primary">
                     Bom: Indicadores dentro da faixa esperada
                   </p>
                   <p id="previewQualText" class="text-sm text-gray-600 mt-1">
@@ -378,7 +446,7 @@
 
             <div class="space-y-3">
               <button id="btnOpenLead"
-                class="w-full h-14 text-lg font-semibold rounded-md bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-200 text-white inline-flex items-center justify-center">
+                class="w-full h-14 text-lg font-semibold rounded-md btn-brand text-white inline-flex items-center justify-center">
                 Ver resultado completo <span class="ml-2">→</span>
               </button>
               <p class="text-xs text-gray-500 text-center">
@@ -400,7 +468,7 @@
 
         <div class="grid sm:grid-cols-2 gap-4 mb-6">
           <!-- IMC -->
-          <div id="imcCard" class="border rounded-2xl p-6 bg-emerald-50 border-emerald-200">
+          <div id="imcCard" class="border rounded-2xl p-6 bg-primary-soft border-primary">
             <div class="flex items-center gap-3 mb-4">
               <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">🏃</div>
               <div>
@@ -409,7 +477,7 @@
               </div>
             </div>
             <div class="mb-3">
-              <span id="imcValue" class="text-4xl font-bold text-emerald-600">0.0</span>
+              <span id="imcValue" class="text-4xl font-bold text-primary">0.0</span>
               <span class="text-gray-500 ml-1">kg/m²</span>
             </div>
             <div id="imcPill" class="inline-flex items-center px-3 py-1.5 rounded-full border">
@@ -418,7 +486,7 @@
           </div>
 
           <!-- WHtR -->
-          <div id="whtrCard" class="border rounded-2xl p-6 bg-emerald-50 border-emerald-200">
+          <div id="whtrCard" class="border rounded-2xl p-6 bg-primary-soft border-primary">
             <div class="flex items-center gap-3 mb-4">
               <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">❤️</div>
               <div>
@@ -427,7 +495,7 @@
               </div>
             </div>
             <div class="mb-3">
-              <span id="whtrValue" class="text-4xl font-bold text-emerald-600">0.00</span>
+              <span id="whtrValue" class="text-4xl font-bold text-primary">0.00</span>
             </div>
             <div id="whtrPill" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border">
               <span id="whtrIcon">✅</span>
@@ -439,7 +507,7 @@
         <!-- Interpretation -->
         <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
           <h3 class="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span class="text-emerald-600">ℹ️</span> O que esses números significam?
+            <span class="text-primary">ℹ️</span> O que esses números significam?
           </h3>
 
           <div class="space-y-4 text-gray-700">
@@ -456,12 +524,12 @@
         </div>
 
         <!-- Disclaimer -->
-        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-6">
+        <div class="bg-cta-soft border border-cta rounded-2xl p-5 mb-6">
           <div class="flex items-start gap-3">
-            <span class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5">⚠️</span>
+            <span class="w-5 h-5 text-cta flex-shrink-0 mt-0.5">⚠️</span>
             <div>
-              <p class="font-medium text-amber-800 mb-1">Aviso Importante</p>
-              <p class="text-sm text-amber-700">
+              <p class="font-medium text-cta mb-1">Aviso Importante</p>
+              <p class="text-sm text-cta">
                 Esta é uma <strong>ferramenta educativa de triagem</strong> e não constitui diagnóstico médico.
                 Os resultados são baseados em indicadores populacionais e não substituem uma avaliação profissional completa.
                 Em caso de sintomas, dúvidas ou para orientação personalizada, procure um profissional de saúde.
@@ -473,7 +541,7 @@
         <!-- CTAs -->
         <div class="space-y-3">
           <a id="btnWhatsappResult" href="#" target="_blank" rel="noopener noreferrer" class="block">
-            <div class="w-full h-14 text-lg font-semibold rounded-md bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-200 text-white flex items-center justify-center">
+            <div class="w-full h-14 text-lg font-semibold rounded-md btn-brand text-white flex items-center justify-center">
               💬 <span class="ml-2">Falar com um consultor do Spa Médico Cevisa</span>
             </div>
           </a>
@@ -489,13 +557,13 @@
     <!-- LeadModal -->
     <div id="leadModal" class="modal-backdrop fixed inset-0 bg-black/50 backdrop-blur-sm z-50 items-center justify-center p-4">
       <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden fade-in">
-        <div class="bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-5 relative">
+        <div class="bg-brand-gradient px-6 py-5 relative">
           <button id="leadClose"
             class="absolute top-4 right-4 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
             <span class="text-white">✕</span>
           </button>
           <h3 class="text-xl font-bold text-white">Quase lá!</h3>
-          <p class="text-emerald-100 text-sm mt-1">
+          <p class="text-on-primary-muted text-sm mt-1">
             Informe seus dados para ver o resultado completo
           </p>
         </div>
@@ -503,24 +571,24 @@
         <form id="leadForm" class="p-6 space-y-5">
           <div class="space-y-2">
             <label for="leadNome" class="flex items-center gap-2 text-gray-700 font-medium">
-              <span class="w-2 h-2 rounded-full bg-emerald-600"></span> Seu nome *
+              <span class="w-2 h-2 rounded-full bg-primary"></span> Seu nome *
             </label>
             <input id="leadNome" type="text" placeholder="Como podemos te chamar?"
-              class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none focus:ring-2 focus:ring-emerald-200" autofocus />
-            <p id="errLeadNome" class="hidden text-red-500 text-sm"></p>
+              class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none ring-brand" autofocus />
+            <p id="errLeadNome" class="hidden text-cta text-sm"></p>
           </div>
 
           <div class="space-y-2">
             <label for="leadWhatsapp" class="flex items-center gap-2 text-gray-700 font-medium">
-              <span class="w-2 h-2 rounded-full bg-emerald-600"></span> WhatsApp *
+              <span class="w-2 h-2 rounded-full bg-primary"></span> WhatsApp *
             </label>
             <input id="leadWhatsapp" type="tel" placeholder="+55 (11) 99999-9999"
-              class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none focus:ring-2 focus:ring-emerald-200" />
-            <p id="errLeadWhatsapp" class="hidden text-red-500 text-sm"></p>
+              class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none ring-brand" />
+            <p id="errLeadWhatsapp" class="hidden text-cta text-sm"></p>
           </div>
 
           <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
-            <span class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5">🛡️</span>
+            <span class="w-5 h-5 text-primary flex-shrink-0 mt-0.5">🛡️</span>
             <p class="text-xs text-gray-600">
               Seus dados são protegidos conforme a LGPD. Utilizamos apenas para enviar seu resultado e,
               se autorizado, informações sobre nossos serviços.
@@ -528,7 +596,7 @@
           </div>
 
           <button id="leadSubmit" type="submit"
-            class="w-full h-14 text-lg font-semibold rounded-md bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-200 text-white flex items-center justify-center gap-3">
+            class="w-full h-14 text-lg font-semibold rounded-md btn-brand text-white flex items-center justify-center gap-3">
             <span id="leadSubmitText">Ver meu resultado completo</span>
             <span id="leadSpinner" class="hidden w-6 h-6 border-2 border-white border-t-transparent rounded-full spin"></span>
           </button>
@@ -541,8 +609,8 @@
       <div class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-50">
         <div class="max-w-md w-full p-8 bg-white rounded-lg shadow-lg border border-slate-100">
           <div class="text-center">
-            <div class="inline-flex items-center justify-center w-16 h-16 mb-6 rounded-full bg-orange-100">
-              <div class="w-8 h-8 text-orange-600 flex items-center justify-center">⚠️</div>
+            <div class="inline-flex items-center justify-center w-16 h-16 mb-6 rounded-full bg-cta-soft">
+              <div class="w-8 h-8 text-cta flex items-center justify-center">⚠️</div>
             </div>
             <h1 class="text-3xl font-bold text-slate-900 mb-4">Access Restricted</h1>
             <p class="text-slate-600 mb-8">
@@ -670,12 +738,12 @@
 
     // IMC class
     function getIMCClassification(imc) {
-      if (imc < 18.5) return { label: 'Baixo peso', color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' };
-      if (imc < 25) return { label: 'Peso adequado', color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-200' };
-      if (imc < 30) return { label: 'Sobrepeso', color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-200' };
-      if (imc < 35) return { label: 'Obesidade grau I', color: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-200' };
-      if (imc < 40) return { label: 'Obesidade grau II', color: 'text-red-500', bg: 'bg-red-50', border: 'border-red-200' };
-      return { label: 'Obesidade grau III', color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-200' };
+      if (imc < 18.5) return { label: 'Baixo peso', color: 'text-secondary', bg: 'bg-secondary-soft', border: 'border-secondary' };
+      if (imc < 25) return { label: 'Peso adequado', color: 'text-primary', bg: 'bg-primary-soft', border: 'border-primary' };
+      if (imc < 30) return { label: 'Sobrepeso', color: 'text-cta', bg: 'bg-cta-soft', border: 'border-cta' };
+      if (imc < 35) return { label: 'Obesidade grau I', color: 'text-cta', bg: 'bg-cta-soft', border: 'border-cta' };
+      if (imc < 40) return { label: 'Obesidade grau II', color: 'text-cta', bg: 'bg-cta-soft', border: 'border-cta' };
+      return { label: 'Obesidade grau III', color: 'text-cta', bg: 'bg-cta-soft', border: 'border-cta' };
     }
 
     function getWHtRInterpretation(whtr) {
@@ -683,18 +751,18 @@
         return {
           label: 'Sem aumento de risco',
           description: 'Sua razão cintura/altura está em uma faixa não associada a aumento de risco cardiometabólico.',
-          color: 'text-emerald-600',
-          bg: 'bg-emerald-50',
-          border: 'border-emerald-200',
+          color: 'text-primary',
+          bg: 'bg-primary-soft',
+          border: 'border-primary',
           icon: '✅'
         };
       }
       return {
         label: 'Aumento de risco cardiometabólico',
         description: 'Sua razão cintura/altura está em uma faixa associada a maior risco de condições cardiometabólicas.',
-        color: 'text-amber-600',
-        bg: 'bg-amber-50',
-        border: 'border-amber-200',
+        color: 'text-cta',
+        bg: 'bg-cta-soft',
+        border: 'border-cta',
         icon: '⚠️'
       };
     }
@@ -866,25 +934,25 @@
 
       $('previewHeader').className =
         'px-6 py-6 ' + (risk
-          ? 'bg-gradient-to-r from-amber-500 to-orange-500'
-          : 'bg-gradient-to-r from-emerald-500 to-teal-500');
+          ? 'bg-cta-gradient'
+          : 'bg-brand-gradient');
 
       $('previewIcon').textContent = risk ? '⚠️' : '✅';
 
       $('previewQualBox').className =
         'p-4 rounded-2xl ' + (risk
-          ? 'bg-amber-50 border border-amber-200'
-          : 'bg-emerald-50 border border-emerald-200');
+          ? 'bg-cta-soft border border-cta'
+          : 'bg-primary-soft border border-primary');
 
       $('previewQualIcon').className =
         'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ' + (risk
-          ? 'bg-amber-100'
-          : 'bg-emerald-100');
+          ? 'bg-cta-soft'
+          : 'bg-primary-soft');
 
       $('previewQualIcon').textContent = risk ? '⚠️' : '✅';
 
       $('previewQualTitle').className =
-        'font-semibold ' + (risk ? 'text-amber-800' : 'text-emerald-800');
+        'font-semibold ' + (risk ? 'text-cta' : 'text-primary');
 
       $('previewQualTitle').textContent = risk
         ? 'Atenção: Indicadores que merecem avaliação'
