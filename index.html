@@ -77,6 +77,62 @@
     .text-on-primary { color: #ffffff; }
     .text-on-primary-muted { color: rgba(255,255,255,0.8); }
 
+    /* Wrapper topo */
+    .spa-brand-top {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    /* Overlay inteligente (uso condicional) */
+    .spa-logo-overlay {
+      padding: 10px 16px;
+      border-radius: 999px;
+    }
+
+    /* Ativar overlay SOMENTE quando necessário */
+    .spa-logo-overlay.is-on-dark {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(6px);
+    }
+
+    /* Logo topo */
+    .spa-brand-logo {
+      max-width: 220px;
+      width: 100%;
+      height: auto;
+      opacity: 0.95;
+    }
+
+    /* Footer */
+    .spa-footer-logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .spa-footer-logo-img {
+      max-width: 160px;
+      width: 100%;
+      height: auto;
+      opacity: 0.75;
+    }
+
+    /* Footer overlay */
+    .spa-logo-overlay.footer.is-on-dark {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(4px);
+    }
+
+    @media (max-width: 640px) {
+      .spa-brand-logo {
+        max-width: 180px;
+      }
+      .spa-footer-logo-img {
+        max-width: 140px;
+      }
+    }
+
     /* Pequenas animações/UX sem React/Framer */
     .fade-in { animation: fadeIn .25s ease-out; }
     @keyframes fadeIn { from { opacity:0; transform: translateY(8px);} to { opacity:1; transform: translateY(0);} }
@@ -118,9 +174,15 @@
         <div class="absolute bottom-0 left-0 w-96 h-96 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 bg-secondary-soft"></div>
 
         <div class="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm border border-primary mb-6">
-            <span class="w-2 h-2 rounded-full bg-primary"></span>
-            <span class="text-sm font-medium text-primary">Spa Médico Adventista Cevisa</span>
+          <div class="spa-brand-top">
+            <div class="spa-logo-overlay">
+              <img
+                src="https://adventisthealth.com.br/wp-content/uploads/2025/03/logo-spa-adv.svg"
+                alt="Spa Médico Adventista Cevisa"
+                class="spa-brand-logo"
+                loading="eager"
+              />
+            </div>
           </div>
 
           <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4">
@@ -380,9 +442,15 @@
       <footer class="bg-gray-900 text-gray-400 py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6">
           <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-primary"></span>
-              <span class="text-sm font-medium text-white">Spa Médico Adventista Cevisa</span>
+            <div class="spa-footer-logo">
+              <div class="spa-logo-overlay footer is-on-dark">
+                <img
+                  src="https://adventisthealth.com.br/wp-content/uploads/2025/03/logo-spa-adv.svg"
+                  alt="Spa Médico Adventista Cevisa"
+                  class="spa-footer-logo-img"
+                  loading="lazy"
+                />
+              </div>
             </div>
 
             <div class="text-sm text-center sm:text-right">
