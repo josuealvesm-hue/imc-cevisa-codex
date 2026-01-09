@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { Activity, Heart, AlertTriangle, CheckCircle, Info, MessageCircle, RotateCcw } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 export default function FullResult({ data, userName, onReset }) {
   // IMC classification
@@ -187,22 +186,20 @@ export default function FullResult({ data, userName, onReset }) {
           href={generateWhatsAppLink()}
           target="_blank"
           rel="noopener noreferrer"
-          className="block"
+          className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-200 flex items-center justify-center rounded-md"
         >
-          <Button className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-200">
-            <MessageCircle className="w-5 h-5 mr-2" />
-            Falar com um consultor do Spa Médico Cevisa
-          </Button>
+          <MessageCircle className="w-5 h-5 mr-2" />
+          Falar com um consultor do Spa Médico Cevisa
         </a>
 
-        <Button
-          variant="outline"
+        <button
+          type="button"
           onClick={onReset}
-          className="w-full h-12 text-gray-600"
+          className="w-full h-12 text-gray-600 border border-gray-300 rounded-md flex items-center justify-center hover:bg-gray-50"
         >
           <RotateCcw className="w-4 h-4 mr-2" />
           Fazer nova avaliação
-        </Button>
+        </button>
       </motion.div>
     </motion.div>
   );

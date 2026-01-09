@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calculator, User, Ruler, Scale, Activity } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function CalculatorCard({ onCalculate }) {
   const [formData, setFormData] = useState({
@@ -122,11 +118,11 @@ export default function CalculatorCard({ onCalculate }) {
           <form onSubmit={handleSubmit} className="p-6 space-y-5">
             {/* Peso */}
             <div className="space-y-2">
-              <Label htmlFor="peso" className="flex items-center gap-2 text-gray-700 font-medium">
+              <label htmlFor="peso" className="flex items-center gap-2 text-gray-700 font-medium">
                 <Scale className="w-4 h-4 text-emerald-600" />
                 Peso (kg) *
-              </Label>
-              <Input
+              </label>
+              <input
                 id="peso"
                 type="text"
                 inputMode="decimal"
@@ -134,7 +130,7 @@ export default function CalculatorCard({ onCalculate }) {
                 value={formData.peso}
                 onChange={(event) => handleChange('peso', event.target.value)}
                 onBlur={() => handleBlur('peso')}
-                className={`h-12 text-lg ${errors.peso ? 'border-red-300 focus:ring-red-200' : 'focus:ring-emerald-200'}`}
+                className={`h-12 text-lg w-full rounded-md border px-3 ${errors.peso ? 'border-red-300 focus:ring-red-200' : 'focus:ring-emerald-200'} focus:outline-none focus:ring-2`}
               />
               <AnimatePresence>
                 {errors.peso && (
@@ -152,11 +148,11 @@ export default function CalculatorCard({ onCalculate }) {
 
             {/* Altura */}
             <div className="space-y-2">
-              <Label htmlFor="altura" className="flex items-center gap-2 text-gray-700 font-medium">
+              <label htmlFor="altura" className="flex items-center gap-2 text-gray-700 font-medium">
                 <Ruler className="w-4 h-4 text-emerald-600" />
                 Altura (cm) *
-              </Label>
-              <Input
+              </label>
+              <input
                 id="altura"
                 type="text"
                 inputMode="decimal"
@@ -164,7 +160,7 @@ export default function CalculatorCard({ onCalculate }) {
                 value={formData.altura}
                 onChange={(event) => handleChange('altura', event.target.value)}
                 onBlur={() => handleBlur('altura')}
-                className={`h-12 text-lg ${errors.altura ? 'border-red-300 focus:ring-red-200' : 'focus:ring-emerald-200'}`}
+                className={`h-12 text-lg w-full rounded-md border px-3 ${errors.altura ? 'border-red-300 focus:ring-red-200' : 'focus:ring-emerald-200'} focus:outline-none focus:ring-2`}
               />
               <AnimatePresence>
                 {errors.altura && (
@@ -182,11 +178,11 @@ export default function CalculatorCard({ onCalculate }) {
 
             {/* Cintura */}
             <div className="space-y-2">
-              <Label htmlFor="cintura" className="flex items-center gap-2 text-gray-700 font-medium">
+              <label htmlFor="cintura" className="flex items-center gap-2 text-gray-700 font-medium">
                 <Activity className="w-4 h-4 text-emerald-600" />
                 Circunferência da cintura (cm) *
-              </Label>
-              <Input
+              </label>
+              <input
                 id="cintura"
                 type="text"
                 inputMode="decimal"
@@ -194,7 +190,7 @@ export default function CalculatorCard({ onCalculate }) {
                 value={formData.cintura}
                 onChange={(event) => handleChange('cintura', event.target.value)}
                 onBlur={() => handleBlur('cintura')}
-                className={`h-12 text-lg ${errors.cintura ? 'border-red-300 focus:ring-red-200' : 'focus:ring-emerald-200'}`}
+                className={`h-12 text-lg w-full rounded-md border px-3 ${errors.cintura ? 'border-red-300 focus:ring-red-200' : 'focus:ring-emerald-200'} focus:outline-none focus:ring-2`}
               />
               <AnimatePresence>
                 {errors.cintura && (
@@ -214,40 +210,41 @@ export default function CalculatorCard({ onCalculate }) {
             <div className="grid grid-cols-2 gap-4">
               {/* Sexo */}
               <div className="space-y-2">
-                <Label htmlFor="sexo" className="flex items-center gap-2 text-gray-700 font-medium">
+                <label htmlFor="sexo" className="flex items-center gap-2 text-gray-700 font-medium">
                   <User className="w-4 h-4 text-gray-400" />
                   Sexo
-                </Label>
-                <Select value={formData.sexo} onValueChange={(value) => handleChange('sexo', value)}>
-                  <SelectTrigger className="h-12">
-                    <SelectValue placeholder="Opcional" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="masculino">Masculino</SelectItem>
-                    <SelectItem value="feminino">Feminino</SelectItem>
-                  </SelectContent>
-                </Select>
+                </label>
+                <select
+                  id="sexo"
+                  value={formData.sexo}
+                  onChange={(event) => handleChange('sexo', event.target.value)}
+                  className="h-12 w-full rounded-md border px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-200"
+                >
+                  <option value="">Opcional</option>
+                  <option value="masculino">Masculino</option>
+                  <option value="feminino">Feminino</option>
+                </select>
               </div>
 
               {/* Idade */}
               <div className="space-y-2">
-                <Label htmlFor="idade" className="text-gray-700 font-medium">
+                <label htmlFor="idade" className="text-gray-700 font-medium">
                   Idade
-                </Label>
-                <Input
+                </label>
+                <input
                   id="idade"
                   type="text"
                   inputMode="numeric"
                   placeholder="Opcional"
                   value={formData.idade}
                   onChange={(event) => handleChange('idade', event.target.value)}
-                  className="h-12"
+                  className="h-12 w-full rounded-md border px-3 focus:outline-none focus:ring-2 focus:ring-emerald-200"
                 />
               </div>
             </div>
 
             {/* Submit button */}
-            <Button
+            <button
               type="submit"
               disabled={isLoading}
               className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-200 transition-all duration-300"
@@ -261,7 +258,7 @@ export default function CalculatorCard({ onCalculate }) {
               ) : (
                 'Ver meu resultado'
               )}
-            </Button>
+            </button>
 
             <p className="text-xs text-gray-500 text-center">
               * Campos obrigatórios

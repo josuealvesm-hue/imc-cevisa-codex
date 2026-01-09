@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, User, Phone, Shield, Loader2 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 
 // Lead endpoint configuration
 const LEAD_ENDPOINT = window.LEAD_ENDPOINT || null;
@@ -180,17 +177,17 @@ export default function LeadModal({ isOpen, onClose, onSubmit, calculatedData })
           <form onSubmit={handleSubmit} className="p-6 space-y-5">
             {/* Nome */}
             <div className="space-y-2">
-              <Label htmlFor="nome" className="flex items-center gap-2 text-gray-700 font-medium">
+              <label htmlFor="nome" className="flex items-center gap-2 text-gray-700 font-medium">
                 <User className="w-4 h-4 text-emerald-600" />
                 Seu nome *
-              </Label>
-              <Input
+              </label>
+              <input
                 id="nome"
                 type="text"
                 placeholder="Como podemos te chamar?"
                 value={formData.nome}
                 onChange={handleNameChange}
-                className={`h-12 text-lg ${errors.nome ? 'border-red-300' : ''}`}
+                className={`h-12 text-lg w-full rounded-md border px-3 focus:outline-none focus:ring-2 focus:ring-emerald-200 ${errors.nome ? 'border-red-300' : ''}`}
                 autoFocus
               />
               {errors.nome && (
@@ -200,17 +197,17 @@ export default function LeadModal({ isOpen, onClose, onSubmit, calculatedData })
 
             {/* WhatsApp */}
             <div className="space-y-2">
-              <Label htmlFor="whatsapp" className="flex items-center gap-2 text-gray-700 font-medium">
+              <label htmlFor="whatsapp" className="flex items-center gap-2 text-gray-700 font-medium">
                 <Phone className="w-4 h-4 text-emerald-600" />
                 WhatsApp *
-              </Label>
-              <Input
+              </label>
+              <input
                 id="whatsapp"
                 type="tel"
                 placeholder="+55 (11) 99999-9999"
                 value={formData.whatsapp}
                 onChange={handleWhatsAppChange}
-                className={`h-12 text-lg ${errors.whatsapp ? 'border-red-300' : ''}`}
+                className={`h-12 text-lg w-full rounded-md border px-3 focus:outline-none focus:ring-2 focus:ring-emerald-200 ${errors.whatsapp ? 'border-red-300' : ''}`}
               />
               {errors.whatsapp && (
                 <p className="text-red-500 text-sm">{errors.whatsapp}</p>
@@ -227,7 +224,7 @@ export default function LeadModal({ isOpen, onClose, onSubmit, calculatedData })
             </div>
 
             {/* Submit */}
-            <Button
+            <button
               type="submit"
               disabled={isSubmitting}
               className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-200"
@@ -237,7 +234,7 @@ export default function LeadModal({ isOpen, onClose, onSubmit, calculatedData })
               ) : (
                 'Ver meu resultado completo'
               )}
-            </Button>
+            </button>
           </form>
         </motion.div>
       </motion.div>

@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { MessageCircle, Phone, MapPin, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 export default function FinalCTA() {
   const whatsappLink = 'https://wa.me/5511999999999?text=' + encodeURIComponent(
@@ -45,14 +44,14 @@ export default function FinalCTA() {
           </div>
 
           {/* CTA Button */}
-          <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-            <Button
-              size="lg"
-              className="h-16 px-10 text-lg font-semibold bg-white text-emerald-700 hover:bg-emerald-50 shadow-xl shadow-black/20"
-            >
-              <MessageCircle className="w-6 h-6 mr-3" />
-              Falar com um consultor
-            </Button>
+          <a
+            href={whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="h-16 px-10 text-lg font-semibold bg-white text-emerald-700 hover:bg-emerald-50 shadow-xl shadow-black/20 rounded-md inline-flex items-center justify-center"
+          >
+            <MessageCircle className="w-6 h-6 mr-3" />
+            Falar com um consultor
           </a>
 
           <p className="text-sm text-emerald-200 mt-4">

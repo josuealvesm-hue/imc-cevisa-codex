@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { AlertTriangle, CheckCircle, ArrowRight, Lock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 export default function PreviewResult({ data, onContinue }) {
   const hasRisk = data.whtr >= 0.5 || data.imc >= 25;
@@ -81,13 +80,13 @@ export default function PreviewResult({ data, onContinue }) {
 
           {/* CTA */}
           <div className="space-y-3">
-            <Button
+            <button
               onClick={onContinue}
               className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-200"
             >
               Ver resultado completo
               <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
+            </button>
             <p className="text-xs text-gray-500 text-center">
               Informe seus dados para receber o resultado detalhado
             </p>
