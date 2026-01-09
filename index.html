@@ -1,0 +1,1238 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Avaliação de Risco Metabólico — Spa Médico Adventista Cevisa</title>
+
+  <!-- Tailwind via CDN (troque por build próprio em produção) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --c-primary: #1C549C;
+      --c-secondary: #6CD3FB;
+      --c-accent: #28F5CC;
+      --c-cta: #FF9500;
+
+      /* Tons claros (para backgrounds suaves) */
+      --c-primary-50: rgba(28,84,156,0.08);
+      --c-secondary-50: rgba(108,211,251,0.16);
+      --c-accent-50: rgba(40,245,204,0.16);
+      --c-cta-50: rgba(255,149,0,0.14);
+
+      /* Sombras */
+      --shadow-primary: 0 10px 25px rgba(28,84,156,0.18);
+      --shadow-cta: 0 10px 25px rgba(255,149,0,0.18);
+    }
+
+    .bg-primary { background: var(--c-primary); }
+    .bg-secondary { background: var(--c-secondary); }
+    .bg-accent { background: var(--c-accent); }
+    .bg-cta { background: var(--c-cta); }
+
+    .text-primary { color: var(--c-primary); }
+    .text-secondary { color: #075985; }
+    .text-accent { color: #0f766e; }
+    .text-cta { color: var(--c-cta); }
+
+    .bg-primary-soft { background: var(--c-primary-50); }
+    .bg-secondary-soft { background: var(--c-secondary-50); }
+    .bg-accent-soft { background: var(--c-accent-50); }
+    .bg-cta-soft { background: var(--c-cta-50); }
+
+    .border-primary { border-color: rgba(28,84,156,0.28); }
+    .border-secondary { border-color: rgba(108,211,251,0.35); }
+    .border-accent { border-color: rgba(40,245,204,0.35); }
+    .border-cta { border-color: rgba(255,149,0,0.35); }
+
+    .btn-brand {
+      background: linear-gradient(90deg, var(--c-primary), var(--c-accent));
+      color: white;
+      box-shadow: var(--shadow-primary);
+    }
+    .btn-brand:hover { filter: brightness(0.95); }
+
+    .btn-cta {
+      background: linear-gradient(90deg, var(--c-cta), var(--c-primary));
+      color: white;
+      box-shadow: var(--shadow-cta);
+    }
+    .btn-cta:hover { filter: brightness(0.95); }
+
+    .ring-brand:focus { outline: none; box-shadow: 0 0 0 4px rgba(108,211,251,0.35); }
+
+    .bg-hero-gradient {
+      background: linear-gradient(135deg, var(--c-primary-50), #ffffff, var(--c-secondary-50));
+    }
+
+    .bg-brand-gradient {
+      background: linear-gradient(90deg, var(--c-primary), var(--c-accent));
+    }
+
+    .bg-cta-gradient {
+      background: linear-gradient(90deg, var(--c-cta), var(--c-primary));
+    }
+
+    .text-on-primary { color: #ffffff; }
+    .text-on-primary-muted { color: rgba(255,255,255,0.8); }
+
+    /* Wrapper topo */
+    .spa-brand-top {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    /* Overlay inteligente (uso condicional) */
+    .spa-logo-overlay {
+      padding: 10px 16px;
+      border-radius: 999px;
+    }
+
+    /* Ativar overlay SOMENTE quando necessário */
+    .spa-logo-overlay.is-on-dark {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(6px);
+    }
+
+    /* Logo topo */
+    .spa-brand-logo {
+      max-width: 220px;
+      width: 100%;
+      height: auto;
+      opacity: 0.95;
+    }
+
+    /* Footer */
+    .spa-footer-logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .spa-footer-logo-img {
+      max-width: 160px;
+      width: 100%;
+      height: auto;
+      opacity: 0.75;
+    }
+
+    /* Footer overlay */
+    .spa-logo-overlay.footer.is-on-dark {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(4px);
+    }
+
+    @media (max-width: 640px) {
+      .spa-brand-logo {
+        max-width: 180px;
+      }
+      .spa-footer-logo-img {
+        max-width: 140px;
+      }
+    }
+
+    /* Pequenas animações/UX sem React/Framer */
+    .fade-in { animation: fadeIn .25s ease-out; }
+    @keyframes fadeIn { from { opacity:0; transform: translateY(8px);} to { opacity:1; transform: translateY(0);} }
+
+    /* Modal */
+    .modal-backdrop { display:none; }
+    .modal-backdrop.open { display:flex; }
+
+    /* Accordion */
+    .acc-panel { max-height:0; opacity:0; overflow:hidden; transition: max-height .2s ease, opacity .2s ease; }
+    .acc-panel.open { max-height: 600px; opacity:1; }
+
+    /* Spinner */
+    .spin { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg);} }
+  </style>
+
+  <script>
+    // =========================
+    // CONFIG (como no seu React)
+    // =========================
+    window.LEAD_ENDPOINT = window.LEAD_ENDPOINT ?? null;         // ex: 'https://api.exemplo.com/leads'
+    window.SEND_CLINICAL_DATA = window.SEND_CLINICAL_DATA ?? false; // incluir peso/altura/cintura etc no lead
+    window.WHATSAPP_NUMBER = window.WHATSAPP_NUMBER ?? "5511999999999"; // troque pro número real
+  </script>
+</head>
+
+<body class="min-h-screen bg-white">
+  <!-- =========================
+       APP ROOT
+  ========================== -->
+  <div id="app" class="min-h-screen bg-white">
+
+    <!-- ======= FORM VIEW (Hero + Calculadora + HowToMeasure + FAQ + CTA + Footer) ======= -->
+    <div id="viewForm" class="fade-in">
+      <!-- HeroSection -->
+      <section class="relative overflow-hidden bg-hero-gradient pt-8 pb-12 md:pt-16 md:pb-20">
+        <div class="absolute top-0 right-0 w-72 h-72 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 bg-primary-soft"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 bg-secondary-soft"></div>
+
+        <div class="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <div class="spa-brand-top">
+            <div class="spa-logo-overlay">
+              <img
+                src="https://adventisthealth.com.br/wp-content/uploads/2025/03/logo-spa-adv.svg"
+                alt="Spa Médico Adventista Cevisa"
+                class="spa-brand-logo"
+                loading="eager"
+              />
+            </div>
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4">
+            Descubra seu
+            <span class="text-transparent bg-clip-text bg-brand-gradient">risco metabólico</span>
+            em 1 minuto
+          </h1>
+
+          <p class="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+            Triagem educativa baseada em IMC e razão cintura/altura.
+          </p>
+
+          <div class="flex flex-wrap justify-center gap-3 sm:gap-4">
+            <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-xl shadow-sm">
+              <span class="w-2 h-2 rounded-full bg-primary"></span>
+              <span class="text-sm font-medium text-gray-700">Cálculo IMC</span>
+            </div>
+            <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-xl shadow-sm">
+              <span class="w-2 h-2 rounded-full bg-cta"></span>
+              <span class="text-sm font-medium text-gray-700">Razão Cintura/Altura</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CalculatorCard -->
+      <section id="calculadora" class="py-8 md:py-12 px-4">
+        <div class="max-w-lg mx-auto">
+          <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden" style="box-shadow: var(--shadow-primary);">
+            <!-- Header -->
+            <div class="bg-brand-gradient px-6 py-5">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                  <span class="text-white font-bold">⌁</span>
+                </div>
+                <div>
+                  <h2 class="text-lg font-semibold text-white">Avaliação de Risco Metabólico</h2>
+                  <p class="text-on-primary-muted text-sm">Preencha seus dados abaixo</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <form id="calcForm" class="p-6 space-y-5">
+              <!-- Peso -->
+              <div class="space-y-2">
+                <label for="peso" class="flex items-center gap-2 text-gray-700 font-medium">
+                  <span class="w-2 h-2 rounded-full bg-primary"></span>
+                  Peso (kg) *
+                </label>
+                <input id="peso" type="text" inputmode="decimal" placeholder="Ex: 70.5"
+                  class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none ring-brand" />
+                <p id="errPeso" class="hidden text-cta text-sm"></p>
+              </div>
+
+              <!-- Altura -->
+              <div class="space-y-2">
+                <label for="altura" class="flex items-center gap-2 text-gray-700 font-medium">
+                  <span class="w-2 h-2 rounded-full bg-primary"></span>
+                  Altura (cm) *
+                </label>
+                <input id="altura" type="text" inputmode="decimal" placeholder="Ex: 170"
+                  class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none ring-brand" />
+                <p id="errAltura" class="hidden text-cta text-sm"></p>
+              </div>
+
+              <!-- Cintura -->
+              <div class="space-y-2">
+                <label for="cintura" class="flex items-center gap-2 text-gray-700 font-medium">
+                  <span class="w-2 h-2 rounded-full bg-primary"></span>
+                  Circunferência da cintura (cm) *
+                </label>
+                <input id="cintura" type="text" inputmode="decimal" placeholder="Ex: 80"
+                  class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none ring-brand" />
+                <p id="errCintura" class="hidden text-cta text-sm"></p>
+              </div>
+
+              <!-- Optional row -->
+              <div class="grid grid-cols-2 gap-4">
+                <!-- Sexo -->
+                <div class="space-y-2">
+                  <label for="sexo" class="flex items-center gap-2 text-gray-700 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-gray-300"></span>
+                    Sexo
+                  </label>
+                  <select id="sexo" class="h-12 w-full rounded-md border border-gray-200 px-3 text-sm focus:outline-none ring-brand">
+                    <option value="">Opcional</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="feminino">Feminino</option>
+                  </select>
+                </div>
+
+                <!-- Idade -->
+                <div class="space-y-2">
+                  <label for="idade" class="text-gray-700 font-medium">Idade</label>
+                  <input id="idade" type="text" inputmode="numeric" placeholder="Opcional"
+                    class="h-12 w-full rounded-md border border-gray-200 px-3 text-sm focus:outline-none ring-brand" />
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <button id="calcSubmit" type="submit"
+                class="w-full h-14 text-lg font-semibold rounded-md btn-brand transition-all duration-300 text-white flex items-center justify-center gap-3">
+                <span id="calcSubmitText">Ver meu resultado</span>
+                <span id="calcSpinner" class="hidden w-6 h-6 border-2 border-white border-t-transparent rounded-full spin"></span>
+              </button>
+
+              <p class="text-xs text-gray-500 text-center">* Campos obrigatórios</p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- HowToMeasure -->
+      <section class="py-12 md:py-16 bg-gradient-to-b from-white to-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+          <div class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary-soft rounded-full mb-4">
+              <span class="w-2 h-2 rounded-full bg-primary"></span>
+              <span class="text-sm font-medium text-primary">Guia de medição</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+              Como medir a circunferência da cintura
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+              Uma medida correta é essencial para um resultado preciso. Siga as instruções abaixo.
+            </p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div class="flex justify-center">
+              <!-- SVG (igual ao seu componente) -->
+              <svg viewBox="0 0 300 400" class="w-full max-w-[280px] h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="150" cy="80" rx="40" ry="45" fill="#E5E7EB" />
+                <path d="M110 120 Q90 200 100 280 Q105 320 120 360 L130 360 Q125 320 125 280 Q125 220 130 160 L150 160 L170 160 Q175 220 175 280 Q175 320 170 360 L180 360 Q195 320 200 280 Q210 200 190 120 Z" fill="#E5E7EB" />
+                <path d="M110 125 Q80 140 60 180 Q55 200 65 210 L75 205 Q70 190 75 175 Q90 145 115 135" fill="#E5E7EB" />
+                <path d="M190 125 Q220 140 240 180 Q245 200 235 210 L225 205 Q230 190 225 175 Q210 145 185 135" fill="#E5E7EB" />
+
+                <ellipse cx="150" cy="200" rx="55" ry="15" fill="none" stroke="var(--c-primary)" stroke-width="4" stroke-dasharray="8 4" />
+                <circle cx="95" cy="200" r="6" fill="var(--c-primary)" />
+                <circle cx="205" cy="200" r="6" fill="var(--c-primary)" />
+
+                <text x="150" y="235" text-anchor="middle" fill="var(--c-primary)" font-size="14" font-weight="600">Ponto de medição</text>
+
+                <path d="M70 165 L85 200 L70 235" fill="none" stroke="#9CA3AF" stroke-width="2" />
+                <text x="55" y="155" fill="#6B7280" font-size="11" text-anchor="middle">Última</text>
+                <text x="55" y="168" fill="#6B7280" font-size="11" text-anchor="middle">costela</text>
+                <text x="55" y="245" fill="#6B7280" font-size="11" text-anchor="middle">Crista</text>
+                <text x="55" y="258" fill="#6B7280" font-size="11" text-anchor="middle">ilíaca</text>
+
+                <rect x="220" y="185" width="40" height="30" rx="3" fill="var(--c-cta-50)" stroke="var(--c-cta)" stroke-width="2" />
+                <line x1="225" y1="195" x2="255" y2="195" stroke="var(--c-cta)" stroke-width="1" />
+                <line x1="225" y1="200" x2="255" y2="200" stroke="var(--c-cta)" stroke-width="1" />
+                <line x1="225" y1="205" x2="255" y2="205" stroke="var(--c-cta)" stroke-width="1" />
+              </svg>
+            </div>
+
+            <div class="space-y-4">
+              <div class="flex items-start gap-4">
+                <div class="w-8 h-8 bg-primary-soft rounded-full flex items-center justify-center flex-shrink-0">
+                  <span class="text-primary font-semibold text-sm">1</span>
+                </div>
+                <p class="text-gray-700 pt-1">Fique em pé, com os pés juntos e o abdômen relaxado</p>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="w-8 h-8 bg-primary-soft rounded-full flex items-center justify-center flex-shrink-0">
+                  <span class="text-primary font-semibold text-sm">2</span>
+                </div>
+                <p class="text-gray-700 pt-1">Localize o ponto médio entre a última costela e a crista ilíaca (osso do quadril)</p>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="w-8 h-8 bg-primary-soft rounded-full flex items-center justify-center flex-shrink-0">
+                  <span class="text-primary font-semibold text-sm">3</span>
+                </div>
+                <p class="text-gray-700 pt-1">Passe a fita métrica ao redor da cintura nesse ponto, mantendo-a horizontal</p>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="w-8 h-8 bg-primary-soft rounded-full flex items-center justify-center flex-shrink-0">
+                  <span class="text-primary font-semibold text-sm">4</span>
+                </div>
+                <p class="text-gray-700 pt-1">Meça ao final de uma expiração normal, sem prender a respiração</p>
+              </div>
+
+              <div class="mt-6 p-4 bg-primary-soft rounded-xl border border-primary">
+                <div class="flex items-start gap-3">
+                  <span class="w-5 h-5 text-primary flex-shrink-0 mt-0.5">✅</span>
+                  <p class="text-sm text-primary">
+                    <strong>Dica:</strong> Faça a medição diretamente sobre a pele ou com roupas leves.
+                    A fita deve ficar firme, mas sem apertar.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- FAQSection -->
+      <section class="py-12 md:py-16 bg-white">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6">
+          <div class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-full mb-4">
+              <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+              <span class="text-sm font-medium text-gray-700">Perguntas frequentes</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Tire suas dúvidas</h2>
+            <p class="text-gray-600">Entenda melhor sobre os indicadores e a avaliação</p>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-gray-200 divide-y divide-gray-100" id="faqRoot">
+            <!-- FAQ items via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- FinalCTA -->
+      <section class="py-16 md:py-20 bg-brand-gradient relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-secondary-soft rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+
+        <div class="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Cuide da sua saúde com quem entende</h2>
+          <p class="text-lg text-on-primary-muted max-w-2xl mx-auto mb-8">
+            O Spa Médico Adventista Cevisa oferece programas completos de saúde e bem-estar,
+            com acompanhamento multidisciplinar personalizado.
+          </p>
+
+          <div class="grid sm:grid-cols-3 gap-4 mb-10">
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+              <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-white/10 flex items-center justify-center text-on-primary-muted">☎</div>
+              <p class="text-sm text-white font-medium">Atendimento Humanizado</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+              <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-white/10 flex items-center justify-center text-on-primary-muted">⏱</div>
+              <p class="text-sm text-white font-medium">Programas Personalizados</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+              <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-white/10 flex items-center justify-center text-on-primary-muted">📍</div>
+              <p class="text-sm text-white font-medium">Ambiente Acolhedor</p>
+            </div>
+          </div>
+
+          <a id="finalCtaBtn" href="#" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center justify-center h-16 px-10 text-lg font-semibold bg-white text-primary hover:bg-gray-50 shadow-xl shadow-black/20 rounded-md">
+            💬 <span class="ml-3">Falar com um consultor</span>
+          </a>
+
+          <p class="text-sm text-on-primary-muted mt-4">Resposta rápida pelo WhatsApp</p>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="bg-gray-900 text-gray-400 py-8">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="spa-footer-logo">
+              <div class="spa-logo-overlay footer is-on-dark">
+                <img
+                  src="https://adventisthealth.com.br/wp-content/uploads/2025/03/logo-spa-adv.svg"
+                  alt="Spa Médico Adventista Cevisa"
+                  class="spa-footer-logo-img"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            <div class="text-sm text-center sm:text-right">
+              <p>© <span id="yearNow"></span> Todos os direitos reservados</p>
+              <p class="text-gray-500 mt-1">Esta ferramenta é educativa e não substitui avaliação médica</p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ======= PREVIEW VIEW ======= -->
+    <div id="viewPreview" class="hidden fade-in py-12 bg-gradient-to-br from-gray-50 to-white min-h-screen">
+      <div class="max-w-lg mx-auto px-4">
+        <div class="bg-white rounded-3xl shadow-xl shadow-gray-100/50 border border-gray-100 overflow-hidden">
+          <div id="previewHeader" class="px-6 py-6 bg-brand-gradient">
+            <div class="flex items-center justify-center gap-3">
+              <div id="previewIcon" class="w-8 h-8 text-white flex items-center justify-center">✅</div>
+              <h3 class="text-xl font-bold text-white">Seu resultado está pronto!</h3>
+            </div>
+          </div>
+
+          <div class="p-6 space-y-6">
+            <div id="previewQualBox" class="p-4 rounded-2xl bg-primary-soft border border-primary">
+              <div class="flex items-start gap-3">
+                <div id="previewQualIcon" class="w-10 h-10 bg-primary-soft rounded-xl flex items-center justify-center flex-shrink-0">✅</div>
+                <div>
+                  <p id="previewQualTitle" class="font-semibold text-primary">
+                    Bom: Indicadores dentro da faixa esperada
+                  </p>
+                  <p id="previewQualText" class="text-sm text-gray-600 mt-1">
+                    Seus indicadores estão em faixas associadas a menor risco metabólico.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="relative">
+              <div class="blur-sm select-none pointer-events-none">
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="bg-gray-50 rounded-xl p-4">
+                    <p class="text-sm text-gray-500">Seu IMC</p>
+                    <p class="text-2xl font-bold text-gray-800">XX.X</p>
+                    <p class="text-sm text-gray-600">Classificação</p>
+                  </div>
+                  <div class="bg-gray-50 rounded-xl p-4">
+                    <p class="text-sm text-gray-500">Razão C/A</p>
+                    <p class="text-2xl font-bold text-gray-800">X.XX</p>
+                    <p class="text-sm text-gray-600">Interpretação</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="absolute inset-0 flex items-center justify-center bg-white/60 backdrop-blur-[2px] rounded-xl">
+                <div class="text-center">
+                  <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2">🔒</div>
+                  <p class="text-sm text-gray-600 font-medium">Resultado detalhado</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <button id="btnOpenLead"
+                class="w-full h-14 text-lg font-semibold rounded-md btn-brand text-white inline-flex items-center justify-center">
+                Ver resultado completo <span class="ml-2">→</span>
+              </button>
+              <p class="text-xs text-gray-500 text-center">
+                Informe seus dados para receber o resultado detalhado
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======= RESULT VIEW ======= -->
+    <div id="viewResult" class="hidden fade-in bg-gradient-to-br from-gray-50 to-white min-h-screen">
+      <div class="max-w-2xl mx-auto px-4 py-8">
+        <div class="text-center mb-8">
+          <h2 id="resultTitle" class="text-2xl sm:text-3xl font-bold text-gray-900">Seu resultado completo</h2>
+          <p class="text-gray-600 mt-2">Avaliação de Risco Metabólico</p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4 mb-6">
+          <!-- IMC -->
+          <div id="imcCard" class="border rounded-2xl p-6 bg-primary-soft border-primary">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">🏃</div>
+              <div>
+                <p class="text-sm text-gray-600">Índice de Massa Corporal</p>
+                <p class="text-xs text-gray-500">IMC</p>
+              </div>
+            </div>
+            <div class="mb-3">
+              <span id="imcValue" class="text-4xl font-bold text-primary">0.0</span>
+              <span class="text-gray-500 ml-1">kg/m²</span>
+            </div>
+            <div id="imcPill" class="inline-flex items-center px-3 py-1.5 rounded-full border">
+              <span id="imcLabel" class="text-sm font-medium">—</span>
+            </div>
+          </div>
+
+          <!-- WHtR -->
+          <div id="whtrCard" class="border rounded-2xl p-6 bg-primary-soft border-primary">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">❤️</div>
+              <div>
+                <p class="text-sm text-gray-600">Razão Cintura/Altura</p>
+                <p class="text-xs text-gray-500">WHtR</p>
+              </div>
+            </div>
+            <div class="mb-3">
+              <span id="whtrValue" class="text-4xl font-bold text-primary">0.00</span>
+            </div>
+            <div id="whtrPill" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border">
+              <span id="whtrIcon">✅</span>
+              <span id="whtrLabel" class="text-sm font-medium">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interpretation -->
+        <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
+          <h3 class="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <span class="text-primary">ℹ️</span> O que esses números significam?
+          </h3>
+
+          <div class="space-y-4 text-gray-700">
+            <div>
+              <p class="font-medium mb-1">IMC (Índice de Massa Corporal)</p>
+              <p id="imcExplain" class="text-sm text-gray-600"></p>
+            </div>
+
+            <div>
+              <p class="font-medium mb-1">Razão Cintura/Altura (WHtR)</p>
+              <p id="whtrExplain" class="text-sm text-gray-600"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="bg-cta-soft border border-cta rounded-2xl p-5 mb-6">
+          <div class="flex items-start gap-3">
+            <span class="w-5 h-5 text-cta flex-shrink-0 mt-0.5">⚠️</span>
+            <div>
+              <p class="font-medium text-cta mb-1">Aviso Importante</p>
+              <p class="text-sm text-cta">
+                Esta é uma <strong>ferramenta educativa de triagem</strong> e não constitui diagnóstico médico.
+                Os resultados são baseados em indicadores populacionais e não substituem uma avaliação profissional completa.
+                Em caso de sintomas, dúvidas ou para orientação personalizada, procure um profissional de saúde.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTAs -->
+        <div class="space-y-3">
+          <a id="btnWhatsappResult" href="#" target="_blank" rel="noopener noreferrer" class="block">
+            <div class="w-full h-14 text-lg font-semibold rounded-md btn-brand text-white flex items-center justify-center">
+              💬 <span class="ml-2">Falar com um consultor do Spa Médico Cevisa</span>
+            </div>
+          </a>
+
+          <button id="btnReset"
+            class="w-full h-12 rounded-md border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 font-medium flex items-center justify-center">
+            ↺ <span class="ml-2">Fazer nova avaliação</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LeadModal -->
+    <div id="leadModal" class="modal-backdrop fixed inset-0 bg-black/50 backdrop-blur-sm z-50 items-center justify-center p-4">
+      <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden fade-in">
+        <div class="bg-brand-gradient px-6 py-5 relative">
+          <button id="leadClose"
+            class="absolute top-4 right-4 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
+            <span class="text-white">✕</span>
+          </button>
+          <h3 class="text-xl font-bold text-white">Quase lá!</h3>
+          <p class="text-on-primary-muted text-sm mt-1">
+            Informe seus dados para ver o resultado completo
+          </p>
+        </div>
+
+        <form id="leadForm" class="p-6 space-y-5">
+          <div class="space-y-2">
+            <label for="leadNome" class="flex items-center gap-2 text-gray-700 font-medium">
+              <span class="w-2 h-2 rounded-full bg-primary"></span> Seu nome *
+            </label>
+            <input id="leadNome" type="text" placeholder="Como podemos te chamar?"
+              class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none ring-brand" autofocus />
+            <p id="errLeadNome" class="hidden text-cta text-sm"></p>
+          </div>
+
+          <div class="space-y-2">
+            <label for="leadWhatsapp" class="flex items-center gap-2 text-gray-700 font-medium">
+              <span class="w-2 h-2 rounded-full bg-primary"></span> WhatsApp *
+            </label>
+            <input id="leadWhatsapp" type="tel" placeholder="+55 (11) 99999-9999"
+              class="h-12 w-full rounded-md border border-gray-200 px-3 text-lg focus:outline-none ring-brand" />
+            <p id="errLeadWhatsapp" class="hidden text-cta text-sm"></p>
+          </div>
+
+          <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+            <span class="w-5 h-5 text-primary flex-shrink-0 mt-0.5">🛡️</span>
+            <p class="text-xs text-gray-600">
+              Seus dados são protegidos conforme a LGPD. Utilizamos apenas para enviar seu resultado e,
+              se autorizado, informações sobre nossos serviços.
+            </p>
+          </div>
+
+          <button id="leadSubmit" type="submit"
+            class="w-full h-14 text-lg font-semibold rounded-md btn-brand text-white flex items-center justify-center gap-3">
+            <span id="leadSubmitText">Ver meu resultado completo</span>
+            <span id="leadSpinner" class="hidden w-6 h-6 border-2 border-white border-t-transparent rounded-full spin"></span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- (Opcional) UserNotRegisteredError como template -->
+    <template id="notRegisteredTemplate">
+      <div class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-white to-slate-50">
+        <div class="max-w-md w-full p-8 bg-white rounded-lg shadow-lg border border-slate-100">
+          <div class="text-center">
+            <div class="inline-flex items-center justify-center w-16 h-16 mb-6 rounded-full bg-cta-soft">
+              <div class="w-8 h-8 text-cta flex items-center justify-center">⚠️</div>
+            </div>
+            <h1 class="text-3xl font-bold text-slate-900 mb-4">Access Restricted</h1>
+            <p class="text-slate-600 mb-8">
+              You are not registered to use this application. Please contact the app administrator to request access.
+            </p>
+            <div class="p-4 bg-slate-50 rounded-md text-sm text-slate-600">
+              <p>If you believe this is an error, you can:</p>
+              <ul class="list-disc list-inside mt-2 space-y-1">
+                <li>Verify you are logged in with the correct account</li>
+                <li>Contact the app administrator for access</li>
+                <li>Try logging out and back in again</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+
+  </div>
+
+  <script>
+    // =========================
+    // FAQ DATA (igual ao seu array)
+    // =========================
+    const faqs = [
+      {
+        question: 'O que é IMC e como ele é calculado?',
+        answer: 'O Índice de Massa Corporal (IMC) é calculado dividindo o peso (em kg) pela altura ao quadrado (em metros). Por exemplo, uma pessoa com 70kg e 1,70m tem IMC = 70 ÷ (1,70 × 1,70) = 24,2. É uma ferramenta de triagem populacional, não um diagnóstico individual.'
+      },
+      {
+        question: 'Por que a razão cintura/altura é importante?',
+        answer: 'A razão cintura/altura (WHtR) é um indicador de gordura abdominal, que está mais fortemente associada a riscos cardiometabólicos do que o peso total. Valores iguais ou acima de 0,50 indicam que a circunferência da cintura é pelo menos metade da altura, o que está associado a maior risco de doenças cardiovasculares e diabetes.'
+      },
+      {
+        question: 'Esta avaliação substitui uma consulta médica?',
+        answer: 'Não. Esta é uma ferramenta educativa de triagem que utiliza indicadores populacionais. Ela não considera fatores individuais importantes como composição corporal, histórico de saúde, genética e estilo de vida. Sempre procure um profissional de saúde para uma avaliação completa e personalizada.'
+      },
+      {
+        question: 'O que devo fazer se meu resultado indicar risco?',
+        answer: 'Se seus indicadores sugerirem aumento de risco, é recomendado buscar orientação profissional. No Spa Médico Adventista Cevisa, oferecemos avaliação completa com profissionais especializados, incluindo médicos, nutricionistas e educadores físicos, para criar um plano personalizado para sua saúde.'
+      },
+      {
+        question: 'Os limites de IMC são os mesmos para todas as pessoas?',
+        answer: 'Os pontos de corte padrão (como 25 para sobrepeso) são baseados em estudos populacionais, principalmente em populações caucasianas. Para algumas etnias, como asiáticos, os riscos podem aumentar com valores menores de IMC. Além disso, atletas com maior massa muscular podem ter IMC elevado sem excesso de gordura. Por isso, é importante a avaliação profissional.'
+      },
+      {
+        question: 'Meus dados ficam salvos em algum lugar?',
+        answer: 'Seus dados clínicos (peso, altura, cintura) são processados apenas no seu navegador e não são armazenados em nossos servidores. Apenas as informações de contato que você fornecer voluntariamente são armazenadas, conforme nossa política de privacidade e em conformidade com a LGPD.'
+      }
+    ];
+
+    // =========================
+    // STATE (equivalente ao React)
+    // =========================
+    let step = 'form';             // 'form' | 'preview' | 'result'
+    let calculatedData = null;     // {peso,altura,cintura,sexo,idade,imc,whtr}
+    let userName = '';
+
+    // =========================
+    // DOM HELPERS
+    // =========================
+    const $ = (id) => document.getElementById(id);
+
+    function setVisibleStep(next) {
+      step = next;
+      $('viewForm').classList.toggle('hidden', step !== 'form');
+      $('viewPreview').classList.toggle('hidden', step !== 'preview');
+      $('viewResult').classList.toggle('hidden', step !== 'result');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function onlyNumbersAndDot(v) {
+      return String(v || '').replace(/[^0-9.]/g, '');
+    }
+
+    function showErr(id, msg) {
+      const el = $(id);
+      if (!msg) {
+        el.textContent = '';
+        el.classList.add('hidden');
+        return;
+      }
+      el.textContent = msg;
+      el.classList.remove('hidden');
+    }
+
+    function validateField(name, value) {
+      const n = parseFloat(value);
+      if (name === 'peso') {
+        if (!value) return 'Peso é obrigatório';
+        if (n < 20 || n > 300) return 'Peso deve estar entre 20 e 300 kg';
+        return '';
+      }
+      if (name === 'altura') {
+        if (!value) return 'Altura é obrigatória';
+        if (n < 100 || n > 250) return 'Altura deve estar entre 100 e 250 cm';
+        return '';
+      }
+      if (name === 'cintura') {
+        if (!value) return 'Medida da cintura é obrigatória';
+        if (n < 40 || n > 200) return 'Cintura deve estar entre 40 e 200 cm';
+        return '';
+      }
+      return '';
+    }
+
+    function compute(peso, alturaCm, cinturaCm, sexo, idade) {
+      const alturaM = alturaCm / 100;
+      const imc = peso / (alturaM * alturaM);
+      const whtr = cinturaCm / alturaCm;
+      return {
+        peso,
+        altura: alturaCm,
+        cintura: cinturaCm,
+        sexo: sexo || null,
+        idade: idade ? parseInt(idade, 10) : null,
+        imc: parseFloat(imc.toFixed(1)),
+        whtr: parseFloat(whtr.toFixed(2))
+      };
+    }
+
+    function hasRisk(data) {
+      return data.whtr >= 0.5 || data.imc >= 25;
+    }
+
+    // IMC class
+    function getIMCClassification(imc) {
+      if (imc < 18.5) return { label: 'Baixo peso', color: 'text-secondary', bg: 'bg-secondary-soft', border: 'border-secondary' };
+      if (imc < 25) return { label: 'Peso adequado', color: 'text-primary', bg: 'bg-primary-soft', border: 'border-primary' };
+      if (imc < 30) return { label: 'Sobrepeso', color: 'text-cta', bg: 'bg-cta-soft', border: 'border-cta' };
+      if (imc < 35) return { label: 'Obesidade grau I', color: 'text-cta', bg: 'bg-cta-soft', border: 'border-cta' };
+      if (imc < 40) return { label: 'Obesidade grau II', color: 'text-cta', bg: 'bg-cta-soft', border: 'border-cta' };
+      return { label: 'Obesidade grau III', color: 'text-cta', bg: 'bg-cta-soft', border: 'border-cta' };
+    }
+
+    function getWHtRInterpretation(whtr) {
+      if (whtr < 0.5) {
+        return {
+          label: 'Sem aumento de risco',
+          description: 'Sua razão cintura/altura está em uma faixa não associada a aumento de risco cardiometabólico.',
+          color: 'text-primary',
+          bg: 'bg-primary-soft',
+          border: 'border-primary',
+          icon: '✅'
+        };
+      }
+      return {
+        label: 'Aumento de risco cardiometabólico',
+        description: 'Sua razão cintura/altura está em uma faixa associada a maior risco de condições cardiometabólicas.',
+        color: 'text-cta',
+        bg: 'bg-cta-soft',
+        border: 'border-cta',
+        icon: '⚠️'
+      };
+    }
+
+    // WhatsApp links
+    function buildFinalCTAWhatsapp() {
+      const msg = encodeURIComponent('Olá! Gostaria de saber mais sobre os programas de saúde do Spa Médico Adventista Cevisa.');
+      return `https://wa.me/${window.WHATSAPP_NUMBER}?text=${msg}`;
+    }
+
+    function buildResultWhatsapp(data, imcLabel) {
+      const message = encodeURIComponent(
+        `Olá! Fiz a avaliação de risco metabólico no site do Spa Médico Cevisa.\n\n` +
+        `📊 Meus resultados:\n` +
+        `• IMC: ${data.imc} (${imcLabel})\n` +
+        `• Razão Cintura/Altura: ${data.whtr}\n\n` +
+        `Gostaria de agendar uma avaliação profissional.`
+      );
+      return `https://wa.me/${window.WHATSAPP_NUMBER}?text=${message}`;
+    }
+
+    // =========================
+    // FAQ RENDER
+    // =========================
+    function renderFAQ() {
+      const root = $('faqRoot');
+      root.innerHTML = '';
+      faqs.forEach((f, idx) => {
+        const item = document.createElement('div');
+        item.className = 'border-b border-gray-100 last:border-0';
+        item.innerHTML = `
+          <button class="w-full py-5 flex items-start justify-between gap-4 text-left hover:bg-gray-50/50 transition-colors" data-idx="${idx}">
+            <span class="font-medium text-gray-900">${escapeHtml(f.question)}</span>
+            <span class="w-5 h-5 text-gray-400 flex-shrink-0 transition-transform duration-200" id="chev_${idx}">⌄</span>
+          </button>
+          <div class="acc-panel" id="panel_${idx}">
+            <p class="pb-5 text-gray-600 leading-relaxed pr-8">${escapeHtml(f.answer)}</p>
+          </div>
+        `;
+        root.appendChild(item);
+      });
+
+      // accordion behavior
+      root.querySelectorAll('button[data-idx]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const i = btn.getAttribute('data-idx');
+          const panel = $('panel_' + i);
+          const chev = $('chev_' + i);
+          const open = panel.classList.toggle('open');
+          chev.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+
+          // close others
+          root.querySelectorAll('.acc-panel').forEach(p => {
+            if (p !== panel) p.classList.remove('open');
+          });
+          root.querySelectorAll('[id^="chev_"]').forEach(c => {
+            if (c !== chev) c.style.transform = 'rotate(0deg)';
+          });
+        });
+      });
+    }
+
+    // =========================
+    // LEAD MODAL
+    // =========================
+    function openLeadModal() {
+      $('leadModal').classList.add('open');
+      // autofocus
+      setTimeout(() => $('leadNome').focus(), 50);
+    }
+
+    function closeLeadModal() {
+      $('leadModal').classList.remove('open');
+      clearLeadErrors();
+    }
+
+    function clearLeadErrors() {
+      showErr('errLeadNome', '');
+      showErr('errLeadWhatsapp', '');
+    }
+
+    function formatWhatsApp(value) {
+      const digits = String(value || '').replace(/\D/g, '');
+      if (digits.length === 0) return '';
+      if (digits.length <= 2) return `+${digits}`;
+      if (digits.length <= 4) return `+${digits.slice(0, 2)} (${digits.slice(2)}`;
+      if (digits.length <= 9) return `+${digits.slice(0, 2)} (${digits.slice(2, 4)}) ${digits.slice(4)}`;
+      return `+${digits.slice(0, 2)} (${digits.slice(2, 4)}) ${digits.slice(4, 9)}-${digits.slice(9, 13)}`;
+    }
+
+    function getUTMParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return {
+        utm_source: urlParams.get('utm_source') || '',
+        utm_medium: urlParams.get('utm_medium') || '',
+        utm_campaign: urlParams.get('utm_campaign') || '',
+        utm_term: urlParams.get('utm_term') || '',
+        utm_content: urlParams.get('utm_content') || ''
+      };
+    }
+
+    function validateLead(nome, whatsappFormatted) {
+      const errors = {};
+      if (!nome.trim()) errors.nome = 'Nome é obrigatório';
+      else if (nome.trim().length < 2) errors.nome = 'Nome deve ter pelo menos 2 caracteres';
+
+      const digits = whatsappFormatted.replace(/\D/g, '');
+      if (!digits) errors.whatsapp = 'WhatsApp é obrigatório';
+      else if (digits.length < 12 || digits.length > 13) errors.whatsapp = 'WhatsApp inválido. Use o formato +55 (DD) 9XXXX-XXXX';
+
+      return errors;
+    }
+
+    async function submitLead(nome, whatsappFormatted) {
+      const digits = whatsappFormatted.replace(/\D/g, '');
+      const leadData = {
+        nome: nome.trim(),
+        whatsapp: digits,
+        timestamp: new Date().toISOString(),
+        origem: getUTMParams(),
+        triagem: {
+          imc: calculatedData.imc,
+          whtr: calculatedData.whtr
+        }
+      };
+
+      if (window.SEND_CLINICAL_DATA) {
+        leadData.medidas = {
+          peso: calculatedData.peso,
+          altura: calculatedData.altura,
+          cintura: calculatedData.cintura,
+          sexo: calculatedData.sexo,
+          idade: calculatedData.idade
+        };
+      }
+
+      const endpoint = window.LEAD_ENDPOINT || null;
+
+      try {
+        if (endpoint) {
+          const r = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(leadData)
+          });
+          if (!r.ok) throw new Error('Failed to submit lead');
+          console.log('Lead submitted successfully to endpoint');
+        } else {
+          const existing = JSON.parse(localStorage.getItem('metabolic_leads') || '[]');
+          existing.push(leadData);
+          localStorage.setItem('metabolic_leads', JSON.stringify(existing));
+          console.log('Lead saved to localStorage (no endpoint configured):', leadData);
+        }
+      } catch (err) {
+        console.error('Error submitting lead:', err);
+        const existing = JSON.parse(localStorage.getItem('metabolic_leads') || '[]');
+        existing.push(leadData);
+        localStorage.setItem('metabolic_leads', JSON.stringify(existing));
+        console.log('Lead saved to localStorage as fallback:', leadData);
+      }
+    }
+
+    // =========================
+    // RENDER PREVIEW/RESULT
+    // =========================
+    function renderPreview() {
+      if (!calculatedData) return;
+      const risk = hasRisk(calculatedData);
+
+      $('previewHeader').className =
+        'px-6 py-6 ' + (risk
+          ? 'bg-cta-gradient'
+          : 'bg-brand-gradient');
+
+      $('previewIcon').textContent = risk ? '⚠️' : '✅';
+
+      $('previewQualBox').className =
+        'p-4 rounded-2xl ' + (risk
+          ? 'bg-cta-soft border border-cta'
+          : 'bg-primary-soft border border-primary');
+
+      $('previewQualIcon').className =
+        'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ' + (risk
+          ? 'bg-cta-soft'
+          : 'bg-primary-soft');
+
+      $('previewQualIcon').textContent = risk ? '⚠️' : '✅';
+
+      $('previewQualTitle').className =
+        'font-semibold ' + (risk ? 'text-cta' : 'text-primary');
+
+      $('previewQualTitle').textContent = risk
+        ? 'Atenção: Indicadores que merecem avaliação'
+        : 'Bom: Indicadores dentro da faixa esperada';
+
+      $('previewQualText').textContent = risk
+        ? 'Seus indicadores sugerem que uma avaliação profissional pode ser benéfica.'
+        : 'Seus indicadores estão em faixas associadas a menor risco metabólico.';
+    }
+
+    function renderResult() {
+      if (!calculatedData) return;
+
+      const imcClass = getIMCClassification(calculatedData.imc);
+      const whtrClass = getWHtRInterpretation(calculatedData.whtr);
+
+      // title with first name
+      $('resultTitle').textContent = userName
+        ? `${userName}, aqui está seu resultado`
+        : 'Seu resultado completo';
+
+      // IMC card styling
+      $('imcCard').className = `${imcClass.bg} ${imcClass.border} border rounded-2xl p-6`;
+      $('imcValue').textContent = calculatedData.imc.toFixed(1);
+      $('imcValue').className = `text-4xl font-bold ${imcClass.color}`;
+
+      $('imcPill').className = `inline-flex items-center px-3 py-1.5 rounded-full ${imcClass.bg} border ${imcClass.border}`;
+      $('imcLabel').textContent = imcClass.label;
+      $('imcLabel').className = `text-sm font-medium ${imcClass.color}`;
+
+      // WHtR styling
+      $('whtrCard').className = `${whtrClass.bg} ${whtrClass.border} border rounded-2xl p-6`;
+      $('whtrValue').textContent = calculatedData.whtr.toFixed(2);
+      $('whtrValue').className = `text-4xl font-bold ${whtrClass.color}`;
+
+      $('whtrPill').className = `inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full ${whtrClass.bg} border ${whtrClass.border}`;
+      $('whtrIcon').textContent = whtrClass.icon;
+      $('whtrLabel').textContent = whtrClass.label;
+      $('whtrLabel').className = `text-sm font-medium ${whtrClass.color}`;
+
+      // explanation
+      $('imcExplain').innerHTML =
+        `O IMC é uma medida que relaciona peso e altura, utilizada como triagem inicial para avaliar o estado nutricional. ` +
+        `Seu resultado de <strong>${calculatedData.imc.toFixed(1)} kg/m²</strong> está classificado como <strong>${escapeHtml(imcClass.label)}</strong>.`;
+
+      let whtrExtra = '';
+      if (calculatedData.whtr >= 0.5) {
+        whtrExtra = ` Valores iguais ou acima de 0,50 estão associados a maior risco de doenças cardiovasculares e metabólicas.`;
+      }
+      $('whtrExplain').textContent = whtrClass.description + whtrExtra;
+
+      // WhatsApp CTA
+      $('btnWhatsappResult').href = buildResultWhatsapp(calculatedData, imcClass.label);
+    }
+
+    // =========================
+    // EVENTS
+    // =========================
+    function initCalculator() {
+      const peso = $('peso');
+      const altura = $('altura');
+      const cintura = $('cintura');
+      const idade = $('idade');
+
+      // sanitize numeric inputs like your handleChange
+      [peso, altura, cintura, idade].forEach(el => {
+        el.addEventListener('input', (e) => {
+          if (['peso', 'altura', 'cintura', 'idade'].includes(e.target.id)) {
+            e.target.value = onlyNumbersAndDot(e.target.value);
+          }
+        });
+      });
+
+      // blur validations
+      peso.addEventListener('blur', () => showErr('errPeso', validateField('peso', peso.value)));
+      altura.addEventListener('blur', () => showErr('errAltura', validateField('altura', altura.value)));
+      cintura.addEventListener('blur', () => showErr('errCintura', validateField('cintura', cintura.value)));
+
+      $('calcForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const ep = validateField('peso', peso.value);
+        const ea = validateField('altura', altura.value);
+        const ec = validateField('cintura', cintura.value);
+
+        showErr('errPeso', ep);
+        showErr('errAltura', ea);
+        showErr('errCintura', ec);
+
+        if (ep || ea || ec) return;
+
+        // loading (600ms)
+        $('calcSubmit').disabled = true;
+        $('calcSubmitText').textContent = '';
+        $('calcSpinner').classList.remove('hidden');
+
+        setTimeout(() => {
+          const data = compute(
+            parseFloat(peso.value),
+            parseFloat(altura.value),
+            parseFloat(cintura.value),
+            $('sexo').value,
+            $('idade').value
+          );
+
+          calculatedData = data;
+          renderPreview();
+          setVisibleStep('preview');
+
+          $('calcSubmit').disabled = false;
+          $('calcSpinner').classList.add('hidden');
+          $('calcSubmitText').textContent = 'Ver meu resultado';
+        }, 600);
+      });
+    }
+
+    function initPreview() {
+      $('btnOpenLead').addEventListener('click', () => {
+        openLeadModal();
+      });
+    }
+
+    function initLeadModal() {
+      $('leadClose').addEventListener('click', closeLeadModal);
+      $('leadModal').addEventListener('click', (e) => {
+        if (e.target === $('leadModal')) closeLeadModal();
+      });
+
+      $('leadWhatsapp').addEventListener('input', (e) => {
+        e.target.value = formatWhatsApp(e.target.value);
+        showErr('errLeadWhatsapp', '');
+      });
+
+      $('leadNome').addEventListener('input', () => showErr('errLeadNome', ''));
+
+      $('leadForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nome = $('leadNome').value;
+        const wa = $('leadWhatsapp').value;
+
+        const errs = validateLead(nome, wa);
+        showErr('errLeadNome', errs.nome || '');
+        showErr('errLeadWhatsapp', errs.whatsapp || '');
+        if (errs.nome || errs.whatsapp) return;
+
+        // submitting state
+        $('leadSubmit').disabled = true;
+        $('leadSubmitText').textContent = '';
+        $('leadSpinner').classList.remove('hidden');
+
+        await submitLead(nome, wa);
+
+        // onSubmit behavior: set first name, close modal, step=result
+        userName = (nome.trim().split(' ')[0] || '');
+        closeLeadModal();
+        renderResult();
+        setVisibleStep('result');
+
+        // reset modal inputs (optional)
+        $('leadNome').value = '';
+        $('leadWhatsapp').value = '';
+
+        $('leadSubmit').disabled = false;
+        $('leadSpinner').classList.add('hidden');
+        $('leadSubmitText').textContent = 'Ver meu resultado completo';
+      });
+    }
+
+    function initResult() {
+      $('btnReset').addEventListener('click', () => {
+        // reset like handleReset
+        step = 'form';
+        calculatedData = null;
+        userName = '';
+
+        // clear form fields
+        $('peso').value = '';
+        $('altura').value = '';
+        $('cintura').value = '';
+        $('sexo').value = '';
+        $('idade').value = '';
+
+        showErr('errPeso', '');
+        showErr('errAltura', '');
+        showErr('errCintura', '');
+
+        setVisibleStep('form');
+        setTimeout(() => $('calculadora')?.scrollIntoView({ behavior: 'smooth' }), 150);
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'",'&#039;');
+    }
+
+    // =========================
+    // INIT
+    // =========================
+    $('yearNow').textContent = new Date().getFullYear();
+    $('finalCtaBtn').href = buildFinalCTAWhatsapp();
+
+    renderFAQ();
+    initCalculator();
+    initPreview();
+    initLeadModal();
+    initResult();
+  </script>
+</body>
+</html>
